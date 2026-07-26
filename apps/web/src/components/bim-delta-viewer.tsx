@@ -222,7 +222,7 @@ export function BimDeltaViewer({ candidate, compact = false }: BimDeltaViewerPro
           const focusSize = focusBounds.getSize(new THREE.Vector3());
           const distance = Math.max(7.5, Math.max(focusSize.x, focusSize.y, focusSize.z) * 2.85);
           const viewTarget = focusCenter.clone();
-          viewTarget.z += Math.max(1.1, focusSize.z * 0.6);
+          viewTarget.z -= Math.max(2, focusSize.z * 1.2);
           controls.target.copy(viewTarget);
           camera.position.set(
             viewTarget.x + distance * 0.48,
