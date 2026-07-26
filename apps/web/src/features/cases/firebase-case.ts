@@ -41,8 +41,10 @@ export async function createAndStartCase({
         contentType: file.type || "application/octet-stream",
         customMetadata: { caseId, originalName: file.name },
       });
+      const downloadUrl = await getDownloadURL(fileReference);
       return {
         contentType: file.type || "application/octet-stream",
+        downloadUrl,
         name: file.name,
         size: file.size,
         storagePath,

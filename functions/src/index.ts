@@ -14,6 +14,75 @@ const crewAiAutomationUrl = defineSecret("CREWAI_AUTOMATION_URL");
 const crewAiAutomationToken = defineSecret("CREWAI_AUTOMATION_TOKEN");
 const crewAiCallbackSecret = defineSecret("CREWAI_CALLBACK_SECRET");
 
+type InputManifestFile = {
+  contentType?: string;
+  downloadUrl?: string;
+  name?: string;
+  storagePath?: string;
+};
+
+type InputManifest = {
+  files?: InputManifestFile[];
+  supplier_delay_email?: string;
+};
+
+const publicDemoRoot = "https://build-crew.web.app/demo";
+const demoInputs = {
+  candidateManufacturerFiles: [
+    `${publicDemoRoot}/inputs/manufacturer-ksb-etanorm.pdf`,
+    `${publicDemoRoot}/inputs/manufacturer-grundfos-nb.pdf`,
+    `${publicDemoRoot}/inputs/manufacturer-armstrong-4030.pdf`,
+  ],
+  currentProjectIfcUrl: `${publicDemoRoot}/m601-dajoong-bim.ifc`,
+  equipmentScheduleFiles: [`${publicDemoRoot}/inputs/equipment-schedule-m601.pdf`],
+  originalSubmittalFiles: [
+    `${publicDemoRoot}/inputs/original-submittal-bell-gossett-e1510.pdf`,
+  ],
+  projectDrawingFiles: [`${publicDemoRoot}/m601-source-drawing.png`],
+  projectSpecificationFiles: [
+    `${publicDemoRoot}/inputs/project-specification-23-21-23.pdf`,
+  ],
+  supplierQuoteFiles: [
+    `${publicDemoRoot}/inputs/quote-ksb-2418.pdf`,
+    `${publicDemoRoot}/inputs/quote-grundfos-9017.pdf`,
+    `${publicDemoRoot}/inputs/quote-armstrong-7614.pdf`,
+  ],
+};
+
+const firebaseCallbackUrl =
+  "https://us-west1-build-crew.cloudfunctions.net/receiveCrewAiCallback";
+
+async function loadInputManifest(manifestUrl: string): Promise<InputManifest> {
+  if (!manifestUrl) return {};
+  try {
+    const response = await fetch(manifestUrl);
+    if (!response.ok) {
+      logger.warn("Input manifest could not be downloaded.", {
+        status: response.status,
+      });
+      return {};
+    }
+    return (await response.json()) as InputManifest;
+  } catch (error) {
+    logger.warn("Input manifest download failed.", { error });
+    return {};
+  }
+}
+
+function matchingFileUrls(
+  files: InputManifestFile[],
+  patterns: RegExp[],
+): string[] {
+  return files
+    .filter((file) => patterns.some((pattern) => pattern.test(file.name ?? "")))
+    .map((file) => file.downloadUrl)
+    .filter((url): url is string => Boolean(url));
+}
+
+function firstOrFallback(values: string[], fallback: string): string {
+  return values[0] ?? fallback;
+}
+
 function secureEquals(left: string, right: string): boolean {
   const leftHash = createHash("sha256").update(left).digest();
   const rightHash = createHash("sha256").update(right).digest();
@@ -38,6 +107,41 @@ export const startBuildCrewCase = onCall(
     const automationUrl = crewAiAutomationUrl.value();
     const automationToken = crewAiAutomationToken.value();
     const kickoffId = `pending-${randomUUID()}`;
+    const inputManifestUrl = String(snapshot.get("inputManifestUrl") ?? "");
+    const manifest = await loadInputManifest(inputManifestUrl);
+    const files = manifest.files ?? [];
+
+    const projectSpecificationFiles = matchingFileUrls(files, [
+      /specification/i,
+      /(^|[-_\s])spec([\-_\s.]|$)/i,
+    ]);
+    const projectDrawingFiles = matchingFileUrls(files, [
+      /drawing/i,
+      /plan/i,
+      /m-?601/i,
+      /\.(?:png|jpe?g|dwg|dxf)$/i,
+    ]);
+    const equipmentScheduleFiles = matchingFileUrls(files, [
+      /schedule/i,
+      /equipment[-_\s]?list/i,
+    ]);
+    const originalSubmittalFiles = matchingFileUrls(files, [
+      /original/i,
+      /approved/i,
+      /submittal/i,
+    ]);
+    const candidateManufacturerFiles = matchingFileUrls(files, [
+      /manufacturer/i,
+      /candidate/i,
+      /datasheet/i,
+      /cut[-_\s]?sheet/i,
+    ]);
+    const supplierQuoteFiles = matchingFileUrls(files, [
+      /quote/i,
+      /quotation/i,
+      /rfq/i,
+    ]);
+    const projectIfcFiles = matchingFileUrls(files, [/\.ifc$/i]);
 
     await reference.update({
       status: "queued",
@@ -61,10 +165,47 @@ export const startBuildCrewCase = onCall(
       body: JSON.stringify({
         inputs: {
           case_id: caseId,
-          project_id: snapshot.get("projectId"),
-          equipment_tag: snapshot.get("equipmentTag"),
-          required_on_site_date: snapshot.get("requiredOnSiteDate"),
-          input_manifest_url: snapshot.get("inputManifestUrl") ?? "",
+          project_id: snapshot.get("projectId") ?? "MISSION-BAY-DC",
+          equipment_tag: snapshot.get("equipmentTag") ?? "P-401",
+          supplier_delay_email:
+            snapshot.get("supplierDelayEmail") ??
+            manifest.supplier_delay_email ??
+            "",
+          specified_product:
+            snapshot.get("specifiedProduct") ?? "Bell & Gossett e-1510 4BD",
+          quantity: snapshot.get("quantity") ?? 1,
+          required_on_site_date:
+            snapshot.get("requiredOnSiteDate") ?? "2026-08-28",
+          project_specification_files:
+            projectSpecificationFiles.length > 0
+              ? projectSpecificationFiles
+              : demoInputs.projectSpecificationFiles,
+          project_drawing_files:
+            projectDrawingFiles.length > 0
+              ? projectDrawingFiles
+              : demoInputs.projectDrawingFiles,
+          equipment_schedule_files:
+            equipmentScheduleFiles.length > 0
+              ? equipmentScheduleFiles
+              : demoInputs.equipmentScheduleFiles,
+          current_project_ifc_url: firstOrFallback(
+            projectIfcFiles,
+            demoInputs.currentProjectIfcUrl,
+          ),
+          original_submittal_files:
+            originalSubmittalFiles.length > 0
+              ? originalSubmittalFiles
+              : demoInputs.originalSubmittalFiles,
+          candidate_manufacturer_files:
+            candidateManufacturerFiles.length > 0
+              ? candidateManufacturerFiles
+              : demoInputs.candidateManufacturerFiles,
+          supplier_quote_files:
+            supplierQuoteFiles.length > 0
+              ? supplierQuoteFiles
+              : demoInputs.supplierQuoteFiles,
+          firebase_progress_callback_url: firebaseCallbackUrl,
+          firebase_final_callback_url: firebaseCallbackUrl,
         },
         meta: { caseId, ownerId: uid, source: "buildcrew-firebase" },
       }),
