@@ -40,6 +40,7 @@ export function BimDeltaViewer({ candidate, compact = false }: BimDeltaViewerPro
     scene.background = new THREE.Color(0xdde4e0);
     scene.fog = new THREE.Fog(0xdde4e0, 42, 82);
     const camera = new THREE.PerspectiveCamera(35, 1, 0.05, 120);
+    camera.up.set(0, 0, 1);
     camera.position.set(compact ? 14 : 12, compact ? 8 : -10, compact ? 15 : 8.5);
 
     let renderer: THREE.WebGLRenderer;
@@ -214,9 +215,9 @@ export function BimDeltaViewer({ candidate, compact = false }: BimDeltaViewerPro
           const distance = Math.max(6.5, Math.max(focusSize.x, focusSize.y, focusSize.z) * 2.35);
           controls.target.copy(focusCenter);
           camera.position.set(
-            focusCenter.x + distance,
-            focusCenter.y - distance * 0.78,
-            focusCenter.z + distance * 0.66,
+            focusCenter.x + distance * 0.48,
+            focusCenter.y - distance * 1.35,
+            focusCenter.z + distance * 0.72,
           );
         }
         controls.update();
