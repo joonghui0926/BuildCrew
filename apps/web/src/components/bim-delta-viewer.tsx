@@ -160,6 +160,15 @@ export function BimDeltaViewer({ candidate, compact = false }: BimDeltaViewerPro
                 wireframe: true,
               });
             }
+            if (!compact && object.name.includes("existing-duty")) {
+              return new THREE.MeshBasicMaterial({
+                color: 0xaeb8b2,
+                depthWrite: false,
+                opacity: 0.2,
+                transparent: true,
+                toneMapped: false,
+              });
+            }
             const next = material.clone();
             if (next instanceof THREE.MeshStandardMaterial) {
               next.roughness = Math.min(next.roughness || 0.76, 0.86);
@@ -211,12 +220,14 @@ export function BimDeltaViewer({ candidate, compact = false }: BimDeltaViewerPro
           });
           const focusCenter = focusBounds.getCenter(new THREE.Vector3());
           const focusSize = focusBounds.getSize(new THREE.Vector3());
-          const distance = Math.max(6.5, Math.max(focusSize.x, focusSize.y, focusSize.z) * 2.35);
-          controls.target.copy(focusCenter);
+          const distance = Math.max(7.5, Math.max(focusSize.x, focusSize.y, focusSize.z) * 2.85);
+          const viewTarget = focusCenter.clone();
+          viewTarget.z -= Math.max(0.5, focusSize.z * 0.3);
+          controls.target.copy(viewTarget);
           camera.position.set(
-            focusCenter.x + distance * 0.48,
-            focusCenter.y - distance * 1.35,
-            focusCenter.z + distance * 0.72,
+            viewTarget.x + distance * 0.48,
+            viewTarget.y - distance * 1.35,
+            viewTarget.z + distance * 0.72,
           );
         }
         controls.update();
