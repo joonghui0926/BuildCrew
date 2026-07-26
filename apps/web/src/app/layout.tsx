@@ -6,7 +6,14 @@ export const metadata: Metadata = {
   description:
     "Turn supplier delays into evidence-backed, install-ready BIM replacements.",
   icons: {
-    icon: "/brand/buildcrew-mark.svg",
+    icon: [
+      {
+        url: "/brand/buildcrew-mark.png",
+        type: "image/png",
+      },
+    ],
+    shortcut: "/brand/buildcrew-mark.png",
+    apple: "/brand/buildcrew-mark.png",
   },
 };
 

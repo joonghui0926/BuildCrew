@@ -40,7 +40,7 @@ export function BimDeltaViewer({ candidate, compact = false }: BimDeltaViewerPro
     scene.background = new THREE.Color(0xdde4e0);
     scene.fog = new THREE.Fog(0xdde4e0, 42, 82);
     const camera = new THREE.PerspectiveCamera(35, 1, 0.05, 120);
-    camera.position.set(compact ? 14 : 16, compact ? 8 : 10, compact ? 15 : 16);
+    camera.position.set(compact ? 14 : 12, compact ? 8 : -10, compact ? 15 : 8.5);
 
     let renderer: THREE.WebGLRenderer;
     try {
@@ -88,7 +88,7 @@ export function BimDeltaViewer({ candidate, compact = false }: BimDeltaViewerPro
     controls.screenSpacePanning = true;
     controls.zoomSpeed = 1.1;
     controls.zoomToCursor = true;
-    controls.target.set(5, 1, 2.8);
+    controls.target.set(compact ? 5 : 2.5, compact ? 1 : -2.15, compact ? 2.8 : 1.15);
     controls.minDistance = 5;
     controls.maxDistance = 42;
     controls.maxPolarAngle = Math.PI * 0.495;
@@ -262,8 +262,8 @@ export function BimDeltaViewer({ candidate, compact = false }: BimDeltaViewerPro
       <div
         ref={hostRef}
         className="bim-viewer__canvas"
-        data-camera-position={compact ? "14.000,8.000,15.000" : "16.000,10.000,16.000"}
-        data-camera-target="5.000,1.000,2.800"
+        data-camera-position={compact ? "14.000,8.000,15.000" : "12.000,-10.000,8.500"}
+        data-camera-target={compact ? "5.000,1.000,2.800" : "2.500,-2.150,1.150"}
       />
       {loadingState === "loading" && (
         <div className="bim-viewer__loading"><span />Loading generated GLB</div>
