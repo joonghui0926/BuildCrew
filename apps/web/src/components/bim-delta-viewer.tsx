@@ -196,7 +196,7 @@ export function BimDeltaViewer({ candidate, compact = false }: BimDeltaViewerPro
         model.position.sub(center);
         model.position.y += 1.45;
         scene.add(model);
-        controls.target.set(5, 1.05, 2.8);
+        controls.target.set(compact ? 5 : 2.5, compact ? 1.05 : -0.7, compact ? 2.8 : 1.15);
         controls.update();
         setLoadingState("ready");
         host.dataset.rendererState = "ready";
