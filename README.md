@@ -43,6 +43,7 @@ and marks learned-perception claims as review-required.
 The service exposes:
 
 ```text
+compile_project_bim
 generate_semantic_bim
 place_candidate_in_project
 run_coordination_check
@@ -52,6 +53,26 @@ export_bim_deliverables
 Its guaranteed deliverables are IFC, GLB, BCF, semantic properties, source
 maps, and confidence reports. Native RFA/RVT export is intentionally not
 claimed until an Autodesk APS/Revit Automation exporter is connected.
+
+### Actual 2D-to-BIM demo path
+
+The checked M-601 demo is not a rendered BIM image. It runs through two isolated
+runtimes:
+
+```text
+M-601 construction drawing
+→ Dajoong Spatial Compiler runtime
+→ reviewed SpatialSceneGraph + Buili PlanGraph v2
+→ BuildCrew deterministic mechanical-room compiler
+→ 618-component GLB + semantic IFC4
+→ Three.js interactive coordination viewer
+```
+
+The Dajoong checkpoint is still marked `candidate`. Installation-critical
+coordinates are therefore accepted only after dimensioned-drawing review and
+carry the source image SHA-256 into the SceneGraph and IFC property set. Set
+`DAJOONG_COMPILER_ROOT` and, when needed, `DAJOONG_PYTHON` to use another local
+compiler checkout/runtime.
 
 ## Firebase
 

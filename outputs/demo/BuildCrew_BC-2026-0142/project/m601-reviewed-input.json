@@ -1,0 +1,335 @@
+{
+  "source_sha256": "d8c56e70bddb7390248511ac7852297f95191f1ff0d2ce4b07eb0d8f70d61d0f",
+  "entities": [
+    {
+      "id": "room-main",
+      "kind": "room",
+      "label": "Mechanical Room",
+      "bbox": {
+        "x": 0.098,
+        "y": 0.126,
+        "width": 0.606,
+        "height": 0.635
+      },
+      "center_m": [
+        8.0,
+        6.0,
+        1.6
+      ],
+      "size_m": [
+        16.0,
+        12.0,
+        3.2
+      ],
+      "confidence": 0.99
+    },
+    {
+      "id": "wall-north",
+      "kind": "wall",
+      "label": "North wall",
+      "bbox": {
+        "x": 0.098,
+        "y": 0.126,
+        "width": 0.606,
+        "height": 0.018
+      },
+      "center_m": [
+        8.0,
+        0.0,
+        1.6
+      ],
+      "size_m": [
+        16.0,
+        0.22,
+        3.2
+      ],
+      "confidence": 0.99
+    },
+    {
+      "id": "wall-south",
+      "kind": "wall",
+      "label": "South wall",
+      "bbox": {
+        "x": 0.098,
+        "y": 0.744,
+        "width": 0.606,
+        "height": 0.018
+      },
+      "center_m": [
+        8.0,
+        12.0,
+        1.6
+      ],
+      "size_m": [
+        16.0,
+        0.22,
+        3.2
+      ],
+      "confidence": 0.99
+    },
+    {
+      "id": "wall-west",
+      "kind": "wall",
+      "label": "West wall",
+      "bbox": {
+        "x": 0.098,
+        "y": 0.126,
+        "width": 0.018,
+        "height": 0.636
+      },
+      "center_m": [
+        0.0,
+        6.0,
+        1.6
+      ],
+      "size_m": [
+        0.22,
+        12.0,
+        3.2
+      ],
+      "confidence": 0.99
+    },
+    {
+      "id": "wall-east",
+      "kind": "wall",
+      "label": "East wall",
+      "bbox": {
+        "x": 0.687,
+        "y": 0.126,
+        "width": 0.018,
+        "height": 0.636
+      },
+      "center_m": [
+        16.0,
+        6.0,
+        1.6
+      ],
+      "size_m": [
+        0.22,
+        12.0,
+        3.2
+      ],
+      "confidence": 0.99
+    },
+    {
+      "id": "door-north",
+      "kind": "door",
+      "label": "North access door",
+      "bbox": {
+        "x": 0.402,
+        "y": 0.126,
+        "width": 0.05,
+        "height": 0.074
+      },
+      "center_m": [
+        8.1,
+        0.0,
+        1.05
+      ],
+      "size_m": [
+        1.2,
+        0.22,
+        2.1
+      ],
+      "confidence": 0.99
+    },
+    {
+      "id": "door-south",
+      "kind": "door",
+      "label": "South-east access door",
+      "bbox": {
+        "x": 0.65,
+        "y": 0.682,
+        "width": 0.055,
+        "height": 0.08
+      },
+      "center_m": [
+        14.7,
+        12.0,
+        1.05
+      ],
+      "size_m": [
+        1.1,
+        0.22,
+        2.1
+      ],
+      "confidence": 0.99
+    },
+    {
+      "id": "column-nw",
+      "kind": "column",
+      "label": "Column A1",
+      "bbox": {
+        "x": 0.103,
+        "y": 0.126,
+        "width": 0.022,
+        "height": 0.034
+      },
+      "center_m": [
+        0.55,
+        0.45,
+        1.6
+      ],
+      "size_m": [
+        0.45,
+        0.45,
+        3.2
+      ],
+      "confidence": 0.99
+    },
+    {
+      "id": "column-nc",
+      "kind": "column",
+      "label": "Column A2",
+      "bbox": {
+        "x": 0.361,
+        "y": 0.126,
+        "width": 0.022,
+        "height": 0.034
+      },
+      "center_m": [
+        7.4,
+        0.45,
+        1.6
+      ],
+      "size_m": [
+        0.45,
+        0.45,
+        3.2
+      ],
+      "confidence": 0.99
+    },
+    {
+      "id": "column-ne",
+      "kind": "column",
+      "label": "Column A3",
+      "bbox": {
+        "x": 0.605,
+        "y": 0.126,
+        "width": 0.022,
+        "height": 0.034
+      },
+      "center_m": [
+        13.8,
+        0.45,
+        1.6
+      ],
+      "size_m": [
+        0.45,
+        0.45,
+        3.2
+      ],
+      "confidence": 0.99
+    },
+    {
+      "id": "column-sw",
+      "kind": "column",
+      "label": "Column C1",
+      "bbox": {
+        "x": 0.103,
+        "y": 0.728,
+        "width": 0.022,
+        "height": 0.034
+      },
+      "center_m": [
+        0.55,
+        11.55,
+        1.6
+      ],
+      "size_m": [
+        0.45,
+        0.45,
+        3.2
+      ],
+      "confidence": 0.99
+    },
+    {
+      "id": "column-sc",
+      "kind": "column",
+      "label": "Column C2",
+      "bbox": {
+        "x": 0.361,
+        "y": 0.728,
+        "width": 0.022,
+        "height": 0.034
+      },
+      "center_m": [
+        7.4,
+        11.55,
+        1.6
+      ],
+      "size_m": [
+        0.45,
+        0.45,
+        3.2
+      ],
+      "confidence": 0.99
+    },
+    {
+      "id": "column-se",
+      "kind": "column",
+      "label": "Column C3",
+      "bbox": {
+        "x": 0.605,
+        "y": 0.728,
+        "width": 0.022,
+        "height": 0.034
+      },
+      "center_m": [
+        13.8,
+        11.55,
+        1.6
+      ],
+      "size_m": [
+        0.45,
+        0.45,
+        3.2
+      ],
+      "confidence": 0.99
+    },
+    {
+      "id": "equipment-p401",
+      "kind": "mechanical_equipment",
+      "label": "P-401",
+      "bbox": {
+        "x": 0.414,
+        "y": 0.239,
+        "width": 0.176,
+        "height": 0.137
+      },
+      "center_m": [
+        10.1,
+        4.0,
+        0.72
+      ],
+      "size_m": [
+        3.0,
+        1.35,
+        1.44
+      ],
+      "confidence": 0.99
+    },
+    {
+      "id": "equipment-p402",
+      "kind": "mechanical_equipment",
+      "label": "P-402",
+      "bbox": {
+        "x": 0.414,
+        "y": 0.439,
+        "width": 0.176,
+        "height": 0.137
+      },
+      "center_m": [
+        10.1,
+        8.0,
+        0.72
+      ],
+      "size_m": [
+        3.0,
+        1.35,
+        1.44
+      ],
+      "confidence": 0.99
+    }
+  ]
+}

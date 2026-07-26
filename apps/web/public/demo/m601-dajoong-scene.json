@@ -1,0 +1,767 @@
+{
+  "schema_version": "dajoong.spatial-scene.v1",
+  "scene_id": "mission-bay-m601",
+  "domain": "architecture",
+  "coordinate_system": "image_metric",
+  "entities": [
+    {
+      "id": "room-main",
+      "domain": "architecture",
+      "kind": "room",
+      "label": "Mechanical Room",
+      "confidence": 0.99,
+      "epistemic_uncertainty": 0.010000000000000009,
+      "bbox": {
+        "x": 0.098,
+        "y": 0.126,
+        "width": 0.606,
+        "height": 0.635
+      },
+      "pose": {
+        "center_m": [
+          8.0,
+          6.0,
+          1.6
+        ],
+        "size_m": [
+          16.0,
+          12.0,
+          3.2
+        ],
+        "yaw_deg": 0.0,
+        "coordinate_frame": "M-601-metric"
+      },
+      "severity": "unknown",
+      "passability": {},
+      "attributes": {
+        "source_sheet": "M-601",
+        "verification": "accepted_from_dimensioned_drawing"
+      },
+      "evidence_ids": [
+        "m601-source-drawing"
+      ],
+      "model_version": "dajoong-spatial-lite-0.1+reviewed-plan",
+      "review_state": "accepted"
+    },
+    {
+      "id": "wall-north",
+      "domain": "architecture",
+      "kind": "wall",
+      "label": "North wall",
+      "confidence": 0.99,
+      "epistemic_uncertainty": 0.010000000000000009,
+      "bbox": {
+        "x": 0.098,
+        "y": 0.126,
+        "width": 0.606,
+        "height": 0.018
+      },
+      "pose": {
+        "center_m": [
+          8.0,
+          0.0,
+          1.6
+        ],
+        "size_m": [
+          16.0,
+          0.22,
+          3.2
+        ],
+        "yaw_deg": 0.0,
+        "coordinate_frame": "M-601-metric"
+      },
+      "severity": "unknown",
+      "passability": {},
+      "attributes": {
+        "source_sheet": "M-601",
+        "verification": "accepted_from_dimensioned_drawing"
+      },
+      "evidence_ids": [
+        "m601-source-drawing"
+      ],
+      "model_version": "dajoong-spatial-lite-0.1+reviewed-plan",
+      "review_state": "accepted"
+    },
+    {
+      "id": "wall-south",
+      "domain": "architecture",
+      "kind": "wall",
+      "label": "South wall",
+      "confidence": 0.99,
+      "epistemic_uncertainty": 0.010000000000000009,
+      "bbox": {
+        "x": 0.098,
+        "y": 0.744,
+        "width": 0.606,
+        "height": 0.018
+      },
+      "pose": {
+        "center_m": [
+          8.0,
+          12.0,
+          1.6
+        ],
+        "size_m": [
+          16.0,
+          0.22,
+          3.2
+        ],
+        "yaw_deg": 0.0,
+        "coordinate_frame": "M-601-metric"
+      },
+      "severity": "unknown",
+      "passability": {},
+      "attributes": {
+        "source_sheet": "M-601",
+        "verification": "accepted_from_dimensioned_drawing"
+      },
+      "evidence_ids": [
+        "m601-source-drawing"
+      ],
+      "model_version": "dajoong-spatial-lite-0.1+reviewed-plan",
+      "review_state": "accepted"
+    },
+    {
+      "id": "wall-west",
+      "domain": "architecture",
+      "kind": "wall",
+      "label": "West wall",
+      "confidence": 0.99,
+      "epistemic_uncertainty": 0.010000000000000009,
+      "bbox": {
+        "x": 0.098,
+        "y": 0.126,
+        "width": 0.018,
+        "height": 0.636
+      },
+      "pose": {
+        "center_m": [
+          0.0,
+          6.0,
+          1.6
+        ],
+        "size_m": [
+          0.22,
+          12.0,
+          3.2
+        ],
+        "yaw_deg": 0.0,
+        "coordinate_frame": "M-601-metric"
+      },
+      "severity": "unknown",
+      "passability": {},
+      "attributes": {
+        "source_sheet": "M-601",
+        "verification": "accepted_from_dimensioned_drawing"
+      },
+      "evidence_ids": [
+        "m601-source-drawing"
+      ],
+      "model_version": "dajoong-spatial-lite-0.1+reviewed-plan",
+      "review_state": "accepted"
+    },
+    {
+      "id": "wall-east",
+      "domain": "architecture",
+      "kind": "wall",
+      "label": "East wall",
+      "confidence": 0.99,
+      "epistemic_uncertainty": 0.010000000000000009,
+      "bbox": {
+        "x": 0.687,
+        "y": 0.126,
+        "width": 0.018,
+        "height": 0.636
+      },
+      "pose": {
+        "center_m": [
+          16.0,
+          6.0,
+          1.6
+        ],
+        "size_m": [
+          0.22,
+          12.0,
+          3.2
+        ],
+        "yaw_deg": 0.0,
+        "coordinate_frame": "M-601-metric"
+      },
+      "severity": "unknown",
+      "passability": {},
+      "attributes": {
+        "source_sheet": "M-601",
+        "verification": "accepted_from_dimensioned_drawing"
+      },
+      "evidence_ids": [
+        "m601-source-drawing"
+      ],
+      "model_version": "dajoong-spatial-lite-0.1+reviewed-plan",
+      "review_state": "accepted"
+    },
+    {
+      "id": "door-north",
+      "domain": "architecture",
+      "kind": "door",
+      "label": "North access door",
+      "confidence": 0.99,
+      "epistemic_uncertainty": 0.010000000000000009,
+      "bbox": {
+        "x": 0.402,
+        "y": 0.126,
+        "width": 0.05,
+        "height": 0.074
+      },
+      "pose": {
+        "center_m": [
+          8.1,
+          0.0,
+          1.05
+        ],
+        "size_m": [
+          1.2,
+          0.22,
+          2.1
+        ],
+        "yaw_deg": 0.0,
+        "coordinate_frame": "M-601-metric"
+      },
+      "severity": "unknown",
+      "passability": {},
+      "attributes": {
+        "source_sheet": "M-601",
+        "verification": "accepted_from_dimensioned_drawing"
+      },
+      "evidence_ids": [
+        "m601-source-drawing"
+      ],
+      "model_version": "dajoong-spatial-lite-0.1+reviewed-plan",
+      "review_state": "accepted"
+    },
+    {
+      "id": "door-south",
+      "domain": "architecture",
+      "kind": "door",
+      "label": "South-east access door",
+      "confidence": 0.99,
+      "epistemic_uncertainty": 0.010000000000000009,
+      "bbox": {
+        "x": 0.65,
+        "y": 0.682,
+        "width": 0.055,
+        "height": 0.08
+      },
+      "pose": {
+        "center_m": [
+          14.7,
+          12.0,
+          1.05
+        ],
+        "size_m": [
+          1.1,
+          0.22,
+          2.1
+        ],
+        "yaw_deg": 0.0,
+        "coordinate_frame": "M-601-metric"
+      },
+      "severity": "unknown",
+      "passability": {},
+      "attributes": {
+        "source_sheet": "M-601",
+        "verification": "accepted_from_dimensioned_drawing"
+      },
+      "evidence_ids": [
+        "m601-source-drawing"
+      ],
+      "model_version": "dajoong-spatial-lite-0.1+reviewed-plan",
+      "review_state": "accepted"
+    },
+    {
+      "id": "column-nw",
+      "domain": "architecture",
+      "kind": "column",
+      "label": "Column A1",
+      "confidence": 0.99,
+      "epistemic_uncertainty": 0.010000000000000009,
+      "bbox": {
+        "x": 0.103,
+        "y": 0.126,
+        "width": 0.022,
+        "height": 0.034
+      },
+      "pose": {
+        "center_m": [
+          0.55,
+          0.45,
+          1.6
+        ],
+        "size_m": [
+          0.45,
+          0.45,
+          3.2
+        ],
+        "yaw_deg": 0.0,
+        "coordinate_frame": "M-601-metric"
+      },
+      "severity": "unknown",
+      "passability": {},
+      "attributes": {
+        "source_sheet": "M-601",
+        "verification": "accepted_from_dimensioned_drawing"
+      },
+      "evidence_ids": [
+        "m601-source-drawing"
+      ],
+      "model_version": "dajoong-spatial-lite-0.1+reviewed-plan",
+      "review_state": "accepted"
+    },
+    {
+      "id": "column-nc",
+      "domain": "architecture",
+      "kind": "column",
+      "label": "Column A2",
+      "confidence": 0.99,
+      "epistemic_uncertainty": 0.010000000000000009,
+      "bbox": {
+        "x": 0.361,
+        "y": 0.126,
+        "width": 0.022,
+        "height": 0.034
+      },
+      "pose": {
+        "center_m": [
+          7.4,
+          0.45,
+          1.6
+        ],
+        "size_m": [
+          0.45,
+          0.45,
+          3.2
+        ],
+        "yaw_deg": 0.0,
+        "coordinate_frame": "M-601-metric"
+      },
+      "severity": "unknown",
+      "passability": {},
+      "attributes": {
+        "source_sheet": "M-601",
+        "verification": "accepted_from_dimensioned_drawing"
+      },
+      "evidence_ids": [
+        "m601-source-drawing"
+      ],
+      "model_version": "dajoong-spatial-lite-0.1+reviewed-plan",
+      "review_state": "accepted"
+    },
+    {
+      "id": "column-ne",
+      "domain": "architecture",
+      "kind": "column",
+      "label": "Column A3",
+      "confidence": 0.99,
+      "epistemic_uncertainty": 0.010000000000000009,
+      "bbox": {
+        "x": 0.605,
+        "y": 0.126,
+        "width": 0.022,
+        "height": 0.034
+      },
+      "pose": {
+        "center_m": [
+          13.8,
+          0.45,
+          1.6
+        ],
+        "size_m": [
+          0.45,
+          0.45,
+          3.2
+        ],
+        "yaw_deg": 0.0,
+        "coordinate_frame": "M-601-metric"
+      },
+      "severity": "unknown",
+      "passability": {},
+      "attributes": {
+        "source_sheet": "M-601",
+        "verification": "accepted_from_dimensioned_drawing"
+      },
+      "evidence_ids": [
+        "m601-source-drawing"
+      ],
+      "model_version": "dajoong-spatial-lite-0.1+reviewed-plan",
+      "review_state": "accepted"
+    },
+    {
+      "id": "column-sw",
+      "domain": "architecture",
+      "kind": "column",
+      "label": "Column C1",
+      "confidence": 0.99,
+      "epistemic_uncertainty": 0.010000000000000009,
+      "bbox": {
+        "x": 0.103,
+        "y": 0.728,
+        "width": 0.022,
+        "height": 0.034
+      },
+      "pose": {
+        "center_m": [
+          0.55,
+          11.55,
+          1.6
+        ],
+        "size_m": [
+          0.45,
+          0.45,
+          3.2
+        ],
+        "yaw_deg": 0.0,
+        "coordinate_frame": "M-601-metric"
+      },
+      "severity": "unknown",
+      "passability": {},
+      "attributes": {
+        "source_sheet": "M-601",
+        "verification": "accepted_from_dimensioned_drawing"
+      },
+      "evidence_ids": [
+        "m601-source-drawing"
+      ],
+      "model_version": "dajoong-spatial-lite-0.1+reviewed-plan",
+      "review_state": "accepted"
+    },
+    {
+      "id": "column-sc",
+      "domain": "architecture",
+      "kind": "column",
+      "label": "Column C2",
+      "confidence": 0.99,
+      "epistemic_uncertainty": 0.010000000000000009,
+      "bbox": {
+        "x": 0.361,
+        "y": 0.728,
+        "width": 0.022,
+        "height": 0.034
+      },
+      "pose": {
+        "center_m": [
+          7.4,
+          11.55,
+          1.6
+        ],
+        "size_m": [
+          0.45,
+          0.45,
+          3.2
+        ],
+        "yaw_deg": 0.0,
+        "coordinate_frame": "M-601-metric"
+      },
+      "severity": "unknown",
+      "passability": {},
+      "attributes": {
+        "source_sheet": "M-601",
+        "verification": "accepted_from_dimensioned_drawing"
+      },
+      "evidence_ids": [
+        "m601-source-drawing"
+      ],
+      "model_version": "dajoong-spatial-lite-0.1+reviewed-plan",
+      "review_state": "accepted"
+    },
+    {
+      "id": "column-se",
+      "domain": "architecture",
+      "kind": "column",
+      "label": "Column C3",
+      "confidence": 0.99,
+      "epistemic_uncertainty": 0.010000000000000009,
+      "bbox": {
+        "x": 0.605,
+        "y": 0.728,
+        "width": 0.022,
+        "height": 0.034
+      },
+      "pose": {
+        "center_m": [
+          13.8,
+          11.55,
+          1.6
+        ],
+        "size_m": [
+          0.45,
+          0.45,
+          3.2
+        ],
+        "yaw_deg": 0.0,
+        "coordinate_frame": "M-601-metric"
+      },
+      "severity": "unknown",
+      "passability": {},
+      "attributes": {
+        "source_sheet": "M-601",
+        "verification": "accepted_from_dimensioned_drawing"
+      },
+      "evidence_ids": [
+        "m601-source-drawing"
+      ],
+      "model_version": "dajoong-spatial-lite-0.1+reviewed-plan",
+      "review_state": "accepted"
+    },
+    {
+      "id": "equipment-p401",
+      "domain": "architecture",
+      "kind": "mechanical_equipment",
+      "label": "P-401",
+      "confidence": 0.99,
+      "epistemic_uncertainty": 0.010000000000000009,
+      "bbox": {
+        "x": 0.414,
+        "y": 0.239,
+        "width": 0.176,
+        "height": 0.137
+      },
+      "pose": {
+        "center_m": [
+          10.1,
+          4.0,
+          0.72
+        ],
+        "size_m": [
+          3.0,
+          1.35,
+          1.44
+        ],
+        "yaw_deg": 0.0,
+        "coordinate_frame": "M-601-metric"
+      },
+      "severity": "unknown",
+      "passability": {},
+      "attributes": {
+        "source_sheet": "M-601",
+        "verification": "accepted_from_dimensioned_drawing"
+      },
+      "evidence_ids": [
+        "m601-source-drawing"
+      ],
+      "model_version": "dajoong-spatial-lite-0.1+reviewed-plan",
+      "review_state": "accepted"
+    },
+    {
+      "id": "equipment-p402",
+      "domain": "architecture",
+      "kind": "mechanical_equipment",
+      "label": "P-402",
+      "confidence": 0.99,
+      "epistemic_uncertainty": 0.010000000000000009,
+      "bbox": {
+        "x": 0.414,
+        "y": 0.439,
+        "width": 0.176,
+        "height": 0.137
+      },
+      "pose": {
+        "center_m": [
+          10.1,
+          8.0,
+          0.72
+        ],
+        "size_m": [
+          3.0,
+          1.35,
+          1.44
+        ],
+        "yaw_deg": 0.0,
+        "coordinate_frame": "M-601-metric"
+      },
+      "severity": "unknown",
+      "passability": {},
+      "attributes": {
+        "source_sheet": "M-601",
+        "verification": "accepted_from_dimensioned_drawing"
+      },
+      "evidence_ids": [
+        "m601-source-drawing"
+      ],
+      "model_version": "dajoong-spatial-lite-0.1+reviewed-plan",
+      "review_state": "accepted"
+    }
+  ],
+  "relations": [
+    {
+      "id": "contains-001",
+      "subject_id": "room-main",
+      "predicate": "contains",
+      "object_id": "wall-north",
+      "confidence": 0.99,
+      "evidence_ids": [
+        "m601-source-drawing"
+      ]
+    },
+    {
+      "id": "contains-002",
+      "subject_id": "room-main",
+      "predicate": "contains",
+      "object_id": "wall-south",
+      "confidence": 0.99,
+      "evidence_ids": [
+        "m601-source-drawing"
+      ]
+    },
+    {
+      "id": "contains-003",
+      "subject_id": "room-main",
+      "predicate": "contains",
+      "object_id": "wall-west",
+      "confidence": 0.99,
+      "evidence_ids": [
+        "m601-source-drawing"
+      ]
+    },
+    {
+      "id": "contains-004",
+      "subject_id": "room-main",
+      "predicate": "contains",
+      "object_id": "wall-east",
+      "confidence": 0.99,
+      "evidence_ids": [
+        "m601-source-drawing"
+      ]
+    },
+    {
+      "id": "contains-005",
+      "subject_id": "room-main",
+      "predicate": "contains",
+      "object_id": "door-north",
+      "confidence": 0.99,
+      "evidence_ids": [
+        "m601-source-drawing"
+      ]
+    },
+    {
+      "id": "contains-006",
+      "subject_id": "room-main",
+      "predicate": "contains",
+      "object_id": "door-south",
+      "confidence": 0.99,
+      "evidence_ids": [
+        "m601-source-drawing"
+      ]
+    },
+    {
+      "id": "contains-007",
+      "subject_id": "room-main",
+      "predicate": "contains",
+      "object_id": "column-nw",
+      "confidence": 0.99,
+      "evidence_ids": [
+        "m601-source-drawing"
+      ]
+    },
+    {
+      "id": "contains-008",
+      "subject_id": "room-main",
+      "predicate": "contains",
+      "object_id": "column-nc",
+      "confidence": 0.99,
+      "evidence_ids": [
+        "m601-source-drawing"
+      ]
+    },
+    {
+      "id": "contains-009",
+      "subject_id": "room-main",
+      "predicate": "contains",
+      "object_id": "column-ne",
+      "confidence": 0.99,
+      "evidence_ids": [
+        "m601-source-drawing"
+      ]
+    },
+    {
+      "id": "contains-010",
+      "subject_id": "room-main",
+      "predicate": "contains",
+      "object_id": "column-sw",
+      "confidence": 0.99,
+      "evidence_ids": [
+        "m601-source-drawing"
+      ]
+    },
+    {
+      "id": "contains-011",
+      "subject_id": "room-main",
+      "predicate": "contains",
+      "object_id": "column-sc",
+      "confidence": 0.99,
+      "evidence_ids": [
+        "m601-source-drawing"
+      ]
+    },
+    {
+      "id": "contains-012",
+      "subject_id": "room-main",
+      "predicate": "contains",
+      "object_id": "column-se",
+      "confidence": 0.99,
+      "evidence_ids": [
+        "m601-source-drawing"
+      ]
+    },
+    {
+      "id": "contains-013",
+      "subject_id": "room-main",
+      "predicate": "contains",
+      "object_id": "equipment-p401",
+      "confidence": 0.99,
+      "evidence_ids": [
+        "m601-source-drawing"
+      ]
+    },
+    {
+      "id": "contains-014",
+      "subject_id": "room-main",
+      "predicate": "contains",
+      "object_id": "equipment-p402",
+      "confidence": 0.99,
+      "evidence_ids": [
+        "m601-source-drawing"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "m601-source-drawing",
+      "uri": "C:\\Users\\jjoon\\OneDrive\\Documents\\BuildCrew\\apps\\web\\public\\demo\\m601-source-drawing.png",
+      "sha256": "d8c56e70bddb7390248511ac7852297f95191f1ff0d2ce4b07eb0d8f70d61d0f",
+      "media_type": "image/png",
+      "region": null,
+      "source_type": "drawing",
+      "captured_at": "",
+      "license": "BuildCrew demo project evidence",
+      "metadata": {
+        "doc_id": "M-601",
+        "sheet_id": "M-601",
+        "pixels_per_meter": 59.0,
+        "review_method": "dajoong_model_proposal_plus_verified_dimension_review",
+        "critical_geometry_policy": "dimensioned_drawing_is_authoritative"
+      }
+    }
+  ],
+  "model": {
+    "model_version": "dajoong-spatial-lite-0.1",
+    "checkpoint_sha256": "dd0c74b4779373575fb419814cc3bec5ac8e147b576e43da63db3c7dfa18b3fc",
+    "taxonomy_sha256": "567c6e1bbdc7ca73911c5dd6dad410b9977dc4aeade812140a4f1870143188d3",
+    "dataset_sha256": "",
+    "stage": "candidate",
+    "inference_ms": 0.0
+  },
+  "warnings": [],
+  "verification": {},
+  "review_required": false,
+  "compiled_at": "2026-07-26T19:26:43.418805+00:00",
+  "content_sha256": "cc9fcc78d16190347564ddb6166d20478f193dbbc87713ff992a3da2669aec1b"
+}

@@ -23,6 +23,15 @@ engine = BimEngine()
 
 
 @mcp.tool()
+def compile_project_bim(drawing_path: str, destination: str) -> dict:
+    """Compile a construction drawing through Dajoong into semantic IFC and detailed GLB."""
+    return engine.compile_project_bim(
+        drawing_path=Path(drawing_path).resolve(),
+        destination=Path(destination).resolve(),
+    )
+
+
+@mcp.tool()
 async def generate_semantic_bim(candidate: CandidateInput) -> dict:
     """Generate verified semantic BIM artifacts from manufacturer evidence."""
     result = await engine.generate_semantic_bim(candidate)

@@ -1,0 +1,17 @@
+{
+  "scene_graph": "C:\\Users\\jjoon\\OneDrive\\Documents\\BuildCrew\\outputs\\demo\\BuildCrew_BC-2026-0142\\project\\m601-dajoong-scene.json",
+  "plan_graph": "C:\\Users\\jjoon\\OneDrive\\Documents\\BuildCrew\\outputs\\demo\\BuildCrew_BC-2026-0142\\project\\m601-plan-graph.json",
+  "content_sha256": "cc9fcc78d16190347564ddb6166d20478f193dbbc87713ff992a3da2669aec1b",
+  "entities": 15,
+  "relations": 14,
+  "model_version": "dajoong-spatial-lite-0.1",
+  "checkpoint_stage": "candidate",
+  "review_required": false,
+  "runtime": "C:\\Users\\jjoon\\OneDrive\\Documents\\Dajoong-Spatial-Compiler\\.venv\\Scripts\\python.exe",
+  "review_manifest": "C:\\Users\\jjoon\\OneDrive\\Documents\\BuildCrew\\outputs\\demo\\BuildCrew_BC-2026-0142\\project\\m601-reviewed-input.json",
+  "glb": "C:\\Users\\jjoon\\OneDrive\\Documents\\BuildCrew\\outputs\\demo\\BuildCrew_BC-2026-0142\\project\\m601-dajoong-bim.glb",
+  "ifc": "C:\\Users\\jjoon\\OneDrive\\Documents\\BuildCrew\\outputs\\demo\\BuildCrew_BC-2026-0142\\project\\m601-dajoong-bim.ifc",
+  "geometry_source": "Dajoong SpatialSceneGraph + reviewed M-601 dimensions",
+  "display_geometry_count": 618,
+  "permanent_model_update": false
+}

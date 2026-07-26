@@ -3,6 +3,7 @@ from __future__ import annotations
 import asyncio
 import json
 from pathlib import Path
+from shutil import copy2
 
 from buildcrew_bim_mcp.engine import BimEngine
 from buildcrew_bim_mcp.schemas import (
@@ -53,6 +54,22 @@ async def main() -> None:
     engine = BimEngine(OUTPUT_ROOT / "mcp_artifacts")
     WEB_DEMO_ROOT.mkdir(parents=True, exist_ok=True)
     summaries: list[dict] = []
+    project_output = OUTPUT_ROOT / "BuildCrew_BC-2026-0142" / "project"
+    project_result = engine.compile_project_bim(
+        REPOSITORY_ROOT / "apps" / "web" / "public" / "demo" / "m601-source-drawing.png",
+        project_output,
+    )
+    for artifact_name in (
+        "m601-dajoong-bim.glb",
+        "m601-dajoong-bim.ifc",
+        "m601-dajoong-scene.json",
+        "m601-plan-graph.json",
+    ):
+        copy2(project_output / artifact_name, WEB_DEMO_ROOT / artifact_name)
+    (WEB_DEMO_ROOT / "m601-conversion-result.json").write_text(
+        json.dumps(project_result, indent=2),
+        encoding="utf-8",
+    )
 
     for candidate in candidate_variants():
         artifacts = await engine.generate_semantic_bim(candidate)
@@ -130,7 +147,15 @@ async def main() -> None:
     summary_path = OUTPUT_ROOT / "BuildCrew_BC-2026-0142" / "candidate-comparison.json"
     summary_path.parent.mkdir(parents=True, exist_ok=True)
     summary_path.write_text(json.dumps(summaries, indent=2), encoding="utf-8")
-    print(summary_path)
+    print(
+        json.dumps(
+            {
+                "candidate_summary": str(summary_path),
+                "project_bim": project_result,
+            },
+            indent=2,
+        )
+    )
 
 
 if __name__ == "__main__":

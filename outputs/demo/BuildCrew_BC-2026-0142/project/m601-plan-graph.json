@@ -1,0 +1,360 @@
+{
+  "schema_version": "buili.plan-graph.v2",
+  "project_id": "MB-DC",
+  "sheet_id": "M-601",
+  "scale": {
+    "px_per_meter": 59.0,
+    "source": "dajoong_verified_reference",
+    "confidence": 1.0
+  },
+  "rooms": [
+    {
+      "id": "room-main",
+      "name": "Mechanical Room",
+      "polygon": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          16.0,
+          0.0
+        ],
+        [
+          16.0,
+          12.0
+        ],
+        [
+          0.0,
+          12.0
+        ]
+      ],
+      "confidence": 0.99,
+      "source_ref_ids": [
+        "m601-source-drawing"
+      ],
+      "dajoong_entity_id": "room-main"
+    }
+  ],
+  "walls": [
+    {
+      "id": "wall-north",
+      "room_id": "room-main",
+      "from": [
+        0.0,
+        0.0
+      ],
+      "to": [
+        16.0,
+        0.0
+      ],
+      "height_m": 3.2,
+      "thickness_m": 0.22,
+      "confidence": 0.99,
+      "source_ref_ids": [
+        "m601-source-drawing"
+      ],
+      "dajoong_entity_id": "wall-north"
+    },
+    {
+      "id": "wall-south",
+      "room_id": "room-main",
+      "from": [
+        0.0,
+        12.0
+      ],
+      "to": [
+        16.0,
+        12.0
+      ],
+      "height_m": 3.2,
+      "thickness_m": 0.22,
+      "confidence": 0.99,
+      "source_ref_ids": [
+        "m601-source-drawing"
+      ],
+      "dajoong_entity_id": "wall-south"
+    },
+    {
+      "id": "wall-west",
+      "room_id": "room-main",
+      "from": [
+        0.0,
+        0.0
+      ],
+      "to": [
+        0.0,
+        12.0
+      ],
+      "height_m": 3.2,
+      "thickness_m": 0.22,
+      "confidence": 0.99,
+      "source_ref_ids": [
+        "m601-source-drawing"
+      ],
+      "dajoong_entity_id": "wall-west"
+    },
+    {
+      "id": "wall-east",
+      "room_id": "room-main",
+      "from": [
+        16.0,
+        0.0
+      ],
+      "to": [
+        16.0,
+        12.0
+      ],
+      "height_m": 3.2,
+      "thickness_m": 0.22,
+      "confidence": 0.99,
+      "source_ref_ids": [
+        "m601-source-drawing"
+      ],
+      "dajoong_entity_id": "wall-east"
+    }
+  ],
+  "openings": [
+    {
+      "type": "door",
+      "wall_id": "wall-north",
+      "x_m": 8.1,
+      "center_m": [
+        8.1,
+        0.0
+      ],
+      "width_m": 1.2,
+      "height_m": 2.1,
+      "sill_height_m": 0.0,
+      "source_entity_id": "door-north",
+      "confidence": 0.99,
+      "source_ref_ids": [
+        "m601-source-drawing"
+      ]
+    },
+    {
+      "type": "door",
+      "wall_id": "wall-south",
+      "x_m": 14.7,
+      "center_m": [
+        14.7,
+        12.0
+      ],
+      "width_m": 1.1,
+      "height_m": 2.1,
+      "sill_height_m": 0.0,
+      "source_entity_id": "door-south",
+      "confidence": 0.99,
+      "source_ref_ids": [
+        "m601-source-drawing"
+      ]
+    }
+  ],
+  "fixtures": [
+    {
+      "type": "column",
+      "room_id": "room-main",
+      "required_count": 1,
+      "observed_count": 1,
+      "bbox": [
+        0.32500000000000007,
+        0.225,
+        0.775,
+        0.675
+      ],
+      "center_m": [
+        0.55,
+        0.45
+      ],
+      "source_entity_id": "column-nw",
+      "confidence": 0.99,
+      "source_ref_ids": [
+        "m601-source-drawing"
+      ]
+    },
+    {
+      "type": "column",
+      "room_id": "room-main",
+      "required_count": 1,
+      "observed_count": 1,
+      "bbox": [
+        7.175000000000001,
+        0.225,
+        7.625,
+        0.675
+      ],
+      "center_m": [
+        7.4,
+        0.45
+      ],
+      "source_entity_id": "column-nc",
+      "confidence": 0.99,
+      "source_ref_ids": [
+        "m601-source-drawing"
+      ]
+    },
+    {
+      "type": "column",
+      "room_id": "room-main",
+      "required_count": 1,
+      "observed_count": 1,
+      "bbox": [
+        13.575000000000001,
+        0.225,
+        14.025,
+        0.675
+      ],
+      "center_m": [
+        13.8,
+        0.45
+      ],
+      "source_entity_id": "column-ne",
+      "confidence": 0.99,
+      "source_ref_ids": [
+        "m601-source-drawing"
+      ]
+    },
+    {
+      "type": "column",
+      "room_id": "room-main",
+      "required_count": 1,
+      "observed_count": 1,
+      "bbox": [
+        0.32500000000000007,
+        11.325000000000001,
+        0.775,
+        11.775
+      ],
+      "center_m": [
+        0.55,
+        11.55
+      ],
+      "source_entity_id": "column-sw",
+      "confidence": 0.99,
+      "source_ref_ids": [
+        "m601-source-drawing"
+      ]
+    },
+    {
+      "type": "column",
+      "room_id": "room-main",
+      "required_count": 1,
+      "observed_count": 1,
+      "bbox": [
+        7.175000000000001,
+        11.325000000000001,
+        7.625,
+        11.775
+      ],
+      "center_m": [
+        7.4,
+        11.55
+      ],
+      "source_entity_id": "column-sc",
+      "confidence": 0.99,
+      "source_ref_ids": [
+        "m601-source-drawing"
+      ]
+    },
+    {
+      "type": "column",
+      "room_id": "room-main",
+      "required_count": 1,
+      "observed_count": 1,
+      "bbox": [
+        13.575000000000001,
+        11.325000000000001,
+        14.025,
+        11.775
+      ],
+      "center_m": [
+        13.8,
+        11.55
+      ],
+      "source_entity_id": "column-se",
+      "confidence": 0.99,
+      "source_ref_ids": [
+        "m601-source-drawing"
+      ]
+    },
+    {
+      "type": "mechanical_equipment",
+      "room_id": "room-main",
+      "required_count": 1,
+      "observed_count": 1,
+      "bbox": [
+        8.6,
+        3.325,
+        11.6,
+        4.675
+      ],
+      "center_m": [
+        10.1,
+        4.0
+      ],
+      "source_entity_id": "equipment-p401",
+      "confidence": 0.99,
+      "source_ref_ids": [
+        "m601-source-drawing"
+      ]
+    },
+    {
+      "type": "mechanical_equipment",
+      "room_id": "room-main",
+      "required_count": 1,
+      "observed_count": 1,
+      "bbox": [
+        8.6,
+        7.325,
+        11.6,
+        8.675
+      ],
+      "center_m": [
+        10.1,
+        8.0
+      ],
+      "source_entity_id": "equipment-p402",
+      "confidence": 0.99,
+      "source_ref_ids": [
+        "m601-source-drawing"
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "source_ref_id": "m601-source-drawing",
+      "doc_id": "M-601",
+      "sheet_id": "M-601",
+      "bbox": [],
+      "source_type": "drawing",
+      "source_strength": "strong",
+      "source_hash": "d8c56e70bddb7390248511ac7852297f95191f1ff0d2ce4b07eb0d8f70d61d0f",
+      "license": "BuildCrew demo project evidence",
+      "uri": "C:\\Users\\jjoon\\OneDrive\\Documents\\BuildCrew\\apps\\web\\public\\demo\\m601-source-drawing.png"
+    }
+  ],
+  "extraction": {
+    "engine": "Dajoong Spatial Compiler",
+    "model_version": "dajoong-spatial-lite-0.1",
+    "scene_graph_sha256": "cc9fcc78d16190347564ddb6166d20478f193dbbc87713ff992a3da2669aec1b"
+  },
+  "provenance": {
+    "source_hash": "d8c56e70bddb7390248511ac7852297f95191f1ff0d2ce4b07eb0d8f70d61d0f",
+    "source_revision_state": "spatial_compiled",
+    "source_filename": "C:\\Users\\jjoon\\OneDrive\\Documents\\BuildCrew\\apps\\web\\public\\demo\\m601-source-drawing.png"
+  },
+  "confidence": {
+    "overall": 0.99,
+    "geometry": 0.99,
+    "semantics": 0.99,
+    "scale": 1.0,
+    "traceability": 1.0,
+    "method": "dajoong_evidence_weighted_quality_gates"
+  },
+  "warnings": [],
+  "pipeline": {
+    "spatial_compiler_ms": 0.0,
+    "checkpoint_sha256": "dd0c74b4779373575fb419814cc3bec5ac8e147b576e43da63db3c7dfa18b3fc",
+    "review_required": false
+  }
+}

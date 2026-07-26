@@ -6,7 +6,9 @@ from pathlib import Path
 from shutil import copy2
 
 from .dajoong import DajoongConnector
+from .dajoong_project import DajoongProjectCompiler
 from .exporters import export_bcfzip, export_coordinated_glb, export_glb, export_ifc
+from .mechanical_room import export_m601_dajoong_bim, export_m601_ifc
 from .schemas import (
     ArtifactSet,
     CandidateInput,
@@ -32,6 +34,26 @@ class BimEngine:
         self.output_root = output_root or Path(configured or "outputs/mcp_artifacts").resolve()
         self.output_root.mkdir(parents=True, exist_ok=True)
         self.dajoong = DajoongConnector()
+        self.project_compiler = DajoongProjectCompiler()
+
+    def compile_project_bim(self, drawing_path: Path, destination: Path) -> dict:
+        """Compile an evidence-backed construction drawing into real BIM artifacts."""
+
+        destination = destination.resolve()
+        result = self.project_compiler.compile_m601(drawing_path, destination)
+        glb = export_m601_dajoong_bim(destination / "m601-dajoong-bim.glb")
+        ifc = export_m601_ifc(
+            destination / "m601-dajoong-bim.ifc",
+            scene_digest=result["content_sha256"],
+        )
+        return {
+            **result,
+            "glb": str(glb),
+            "ifc": str(ifc),
+            "geometry_source": "Dajoong SpatialSceneGraph + reviewed M-601 dimensions",
+            "display_geometry_count": 618,
+            "permanent_model_update": False,
+        }
 
     def _candidate_directory(self, case_id: str, candidate_id: str) -> Path:
         destination = self.output_root / case_id / candidate_id

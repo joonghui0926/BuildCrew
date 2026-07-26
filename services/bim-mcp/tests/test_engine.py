@@ -4,9 +4,11 @@ from hashlib import sha256
 from pathlib import Path
 
 import pytest
+import trimesh
 from pydantic import ValidationError
 
 from buildcrew_bim_mcp.engine import BimEngine
+from buildcrew_bim_mcp.mechanical_room import export_m601_dajoong_bim, export_m601_ifc
 from buildcrew_bim_mcp.schemas import (
     AabbObstacle,
     CandidateInput,
@@ -127,6 +129,19 @@ def test_rejects_low_confidence_critical_geometry():
                 )
             ],
         )
+
+
+def test_project_bim_exports_high_detail_glb_and_semantic_ifc(tmp_path: Path):
+    glb = export_m601_dajoong_bim(tmp_path / "m601-dajoong-bim.glb")
+    ifc = export_m601_ifc(tmp_path / "m601-dajoong-bim.ifc", scene_digest="abc123")
+    scene = trimesh.load(glb)
+
+    assert glb.read_bytes()[:4] == b"glTF"
+    assert len(scene.geometry) >= 600
+    ifc_text = ifc.read_text(encoding="utf-8")
+    assert "IFCPUMP" in ifc_text
+    assert "IFCWALL" in ifc_text
+    assert "DajoongSceneDigest" in ifc_text
 
 
 @pytest.mark.asyncio

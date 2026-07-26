@@ -12,6 +12,7 @@ import {
   ArrowDownToLine,
   ArrowRight,
   Bell,
+  Bot,
   Box,
   Check,
   ChevronRight,
@@ -29,6 +30,10 @@ import {
 } from "lucide-react";
 import { BrandLogo } from "./brand-logo";
 import { BimDeltaViewer } from "./bim-delta-viewer";
+import { ConversionShowcase } from "./conversion-showcase";
+import { ProjectsView } from "./projects-view";
+import { EvidenceLibraryView } from "./evidence-library-view";
+import { AgentActivityView } from "./agent-activity-view";
 import { createAndStartCase } from "@/features/cases/firebase-case";
 import { missionBayCase } from "@/features/cases/demo-case";
 import type { Candidate } from "@/features/cases/types";
@@ -36,6 +41,7 @@ import { firebaseAuth } from "@/lib/firebase/client";
 import { formatUsd } from "@/lib/format";
 
 type WorkspaceTab = "coordination" | "evidence" | "deliverables";
+type AppView = "case" | "projects" | "evidence" | "agents";
 
 function CandidateRow({
   candidate,
@@ -69,6 +75,7 @@ function CandidateRow({
 }
 
 export function BuildCrewApp() {
+  const [activeView, setActiveView] = useState<AppView>("case");
   const [selectedCandidateId, setSelectedCandidateId] = useState(missionBayCase.selectedCandidateId);
   const [activeTab, setActiveTab] = useState<WorkspaceTab>("coordination");
   const [isSidebarOpen, setSidebarOpen] = useState(false);
@@ -147,6 +154,12 @@ export function BuildCrewApp() {
       .slice(0, 2)
       .toUpperCase() ?? "JH";
 
+  const openView = (view: AppView) => {
+    setActiveView(view);
+    setSidebarOpen(false);
+    window.scrollTo({ top: 0, behavior: "auto" });
+  };
+
   return (
     <div className="app-shell">
       <header className="mobile-header">
@@ -171,13 +184,14 @@ export function BuildCrewApp() {
           New disruption case
         </button>
         <nav className="primary-nav" aria-label="Primary navigation">
-          <a className="nav-link nav-link--active" href="#workspace"><Gauge size={18} />Active cases</a>
-          <a className="nav-link" href="#deliverables"><FolderOpen size={18} />Projects</a>
-          <a className="nav-link" href="#evidence"><FileCheck2 size={18} />Evidence library</a>
+          <button className={activeView === "case" ? "nav-link nav-link--active" : "nav-link"} onClick={() => openView("case")} type="button"><Gauge size={18} />Active cases</button>
+          <button className={activeView === "projects" ? "nav-link nav-link--active" : "nav-link"} onClick={() => openView("projects")} type="button"><FolderOpen size={18} />Projects</button>
+          <button className={activeView === "evidence" ? "nav-link nav-link--active" : "nav-link"} onClick={() => openView("evidence")} type="button"><FileCheck2 size={18} />Evidence library</button>
+          <button className={activeView === "agents" ? "nav-link nav-link--active" : "nav-link"} onClick={() => openView("agents")} type="button"><Bot size={18} />Agent activity</button>
         </nav>
         <div className="sidebar__section">
           <span className="sidebar__label">OPEN CASES</span>
-          <button className="case-link case-link--active" type="button">
+          <button className="case-link case-link--active" onClick={() => openView("case")} type="button">
             <span className="case-link__marker" />
             <span>
               <strong>{missionBayCase.equipmentTag} · Pump delay</strong>
@@ -215,6 +229,8 @@ export function BuildCrewApp() {
           </div>
         </div>
 
+        {activeView === "case" ? (
+          <>
         <section className="case-hero">
           <div>
             <div className="case-breadcrumb">
@@ -240,6 +256,8 @@ export function BuildCrewApp() {
             </div>
           ))}
         </section>
+
+        <ConversionShowcase />
 
         <div className="workspace-grid">
           <div className="model-area">
@@ -341,12 +359,21 @@ export function BuildCrewApp() {
             </button>
           </aside>
         </div>
+          </>
+        ) : activeView === "projects" ? (
+          <ProjectsView onOpenCase={() => openView("case")} />
+        ) : activeView === "evidence" ? (
+          <EvidenceLibraryView />
+        ) : (
+          <AgentActivityView />
+        )}
       </main>
 
       <nav className="mobile-nav" aria-label="Mobile navigation">
-        <button className="mobile-nav__active" type="button"><Gauge size={20} /><span>Cases</span></button>
-        <button type="button"><Box size={20} /><span>Model</span></button>
-        <button type="button"><FileCheck2 size={20} /><span>Evidence</span></button>
+        <button className={activeView === "case" ? "mobile-nav__active" : ""} onClick={() => openView("case")} type="button"><Gauge size={20} /><span>Case</span></button>
+        <button className={activeView === "projects" ? "mobile-nav__active" : ""} onClick={() => openView("projects")} type="button"><Box size={20} /><span>Projects</span></button>
+        <button className={activeView === "evidence" ? "mobile-nav__active" : ""} onClick={() => openView("evidence")} type="button"><FileCheck2 size={20} /><span>Evidence</span></button>
+        <button className={activeView === "agents" ? "mobile-nav__active" : ""} onClick={() => openView("agents")} type="button"><Bot size={20} /><span>Agents</span></button>
       </nav>
 
       {showNewCase && (
