@@ -59,6 +59,14 @@ async def main() -> None:
         REPOSITORY_ROOT / "apps" / "web" / "public" / "demo" / "m601-source-drawing.png",
         project_output,
     )
+    from buildcrew_bim_mcp.mechanical_room import export_m601_dajoong_bim
+
+    for candidate_id in ("candidate-a", "candidate-b", "candidate-c"):
+        candidate_model = export_m601_dajoong_bim(
+            project_output / f"m601-{candidate_id}.glb",
+            candidate_id=candidate_id,
+        )
+        copy2(candidate_model, WEB_DEMO_ROOT / candidate_model.name)
     for artifact_name in (
         "m601-dajoong-bim.glb",
         "m601-dajoong-bim.ifc",

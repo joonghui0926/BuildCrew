@@ -3,6 +3,7 @@ import { BimDeltaViewer } from "./bim-delta-viewer";
 
 type ProjectsViewProps = {
   onOpenCase: () => void;
+  onOpenCandidate: () => void;
 };
 
 const projects = [
@@ -32,7 +33,7 @@ const projects = [
   },
 ];
 
-export function ProjectsView({ onOpenCase }: ProjectsViewProps) {
+export function ProjectsView({ onOpenCase, onOpenCandidate }: ProjectsViewProps) {
   return (
     <div className="section-view">
       <header className="section-view__hero">
@@ -66,7 +67,7 @@ export function ProjectsView({ onOpenCase }: ProjectsViewProps) {
             <span><Clock3 size={16} /> P-401 awaiting internal approval</span>
             <span><Check size={16} /> 3 prior cases resolved</span>
           </div>
-          <button className="text-link" onClick={onOpenCase} type="button">
+          <button className="text-link" onClick={onOpenCandidate} type="button">
             Review coordinated replacement <ArrowRight size={16} />
           </button>
         </div>

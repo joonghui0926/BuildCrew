@@ -57,7 +57,6 @@ export function ConversionShowcase() {
             <strong>Live generated BIM</strong>
           </div>
           <BimDeltaViewer compact />
-          <div className="conversion-live-badge"><span /> Actual GLB · not a rendered image</div>
         </div>
       </div>
 

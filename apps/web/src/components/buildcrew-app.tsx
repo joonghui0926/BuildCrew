@@ -34,6 +34,7 @@ import { ConversionShowcase } from "./conversion-showcase";
 import { ProjectsView } from "./projects-view";
 import { EvidenceLibraryView } from "./evidence-library-view";
 import { AgentActivityView } from "./agent-activity-view";
+import { CandidateDetailView } from "./candidate-detail-view";
 import { createAndStartCase } from "@/features/cases/firebase-case";
 import { missionBayCase } from "@/features/cases/demo-case";
 import type { Candidate } from "@/features/cases/types";
@@ -41,7 +42,7 @@ import { firebaseAuth } from "@/lib/firebase/client";
 import { formatUsd } from "@/lib/format";
 
 type WorkspaceTab = "coordination" | "evidence" | "deliverables";
-type AppView = "case" | "projects" | "evidence" | "agents";
+type AppView = "case" | "candidate" | "projects" | "evidence" | "agents";
 
 function CandidateRow({
   candidate,
@@ -92,6 +93,13 @@ export function BuildCrewApp() {
   );
 
   useEffect(() => onAuthStateChanged(firebaseAuth, setUser), []);
+
+  useEffect(() => {
+    const frame = window.requestAnimationFrame(() => {
+      window.scrollTo({ top: 0, behavior: "auto" });
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [activeView]);
 
   const notify = (message: string) => {
     setNotice(message);
@@ -157,7 +165,11 @@ export function BuildCrewApp() {
   const openView = (view: AppView) => {
     setActiveView(view);
     setSidebarOpen(false);
-    window.scrollTo({ top: 0, behavior: "auto" });
+  };
+
+  const openCandidate = (candidateId: string) => {
+    setSelectedCandidateId(candidateId);
+    openView("candidate");
   };
 
   return (
@@ -184,7 +196,7 @@ export function BuildCrewApp() {
           New disruption case
         </button>
         <nav className="primary-nav" aria-label="Primary navigation">
-          <button className={activeView === "case" ? "nav-link nav-link--active" : "nav-link"} onClick={() => openView("case")} type="button"><Gauge size={18} />Active cases</button>
+          <button className={activeView === "case" || activeView === "candidate" ? "nav-link nav-link--active" : "nav-link"} onClick={() => openView("case")} type="button"><Gauge size={18} />Active cases</button>
           <button className={activeView === "projects" ? "nav-link nav-link--active" : "nav-link"} onClick={() => openView("projects")} type="button"><FolderOpen size={18} />Projects</button>
           <button className={activeView === "evidence" ? "nav-link nav-link--active" : "nav-link"} onClick={() => openView("evidence")} type="button"><FileCheck2 size={18} />Evidence library</button>
           <button className={activeView === "agents" ? "nav-link nav-link--active" : "nav-link"} onClick={() => openView("agents")} type="button"><Bot size={18} />Agent activity</button>
@@ -319,7 +331,7 @@ export function BuildCrewApp() {
             <div className="decision-rail__heading">
               <span className="eyebrow">CANDIDATE REVIEW</span>
               <h2>One replacement fits.</h2>
-              <p>Three supplier options passed technical screening. Only one survives BIM coordination.</p>
+              <p>Agents reviewed 14 alternatives. Three passed technical screening; one survives BIM coordination.</p>
             </div>
 
             <div className="candidate-stack">
@@ -328,7 +340,7 @@ export function BuildCrewApp() {
                   candidate={candidate}
                   key={candidate.id}
                   selected={candidate.id === selectedCandidateId}
-                  onSelect={() => setSelectedCandidateId(candidate.id)}
+                  onSelect={() => openCandidate(candidate.id)}
                 />
               ))}
             </div>
@@ -360,8 +372,18 @@ export function BuildCrewApp() {
           </aside>
         </div>
           </>
+        ) : activeView === "candidate" ? (
+          <CandidateDetailView
+            candidate={selectedCandidate}
+            caseData={missionBayCase}
+            onBack={() => openView("case")}
+            onSelectCandidate={setSelectedCandidateId}
+          />
         ) : activeView === "projects" ? (
-          <ProjectsView onOpenCase={() => openView("case")} />
+          <ProjectsView
+            onOpenCandidate={() => openCandidate(missionBayCase.selectedCandidateId)}
+            onOpenCase={() => openView("case")}
+          />
         ) : activeView === "evidence" ? (
           <EvidenceLibraryView />
         ) : (
@@ -370,7 +392,7 @@ export function BuildCrewApp() {
       </main>
 
       <nav className="mobile-nav" aria-label="Mobile navigation">
-        <button className={activeView === "case" ? "mobile-nav__active" : ""} onClick={() => openView("case")} type="button"><Gauge size={20} /><span>Case</span></button>
+        <button className={activeView === "case" || activeView === "candidate" ? "mobile-nav__active" : ""} onClick={() => openView("case")} type="button"><Gauge size={20} /><span>Case</span></button>
         <button className={activeView === "projects" ? "mobile-nav__active" : ""} onClick={() => openView("projects")} type="button"><Box size={20} /><span>Projects</span></button>
         <button className={activeView === "evidence" ? "mobile-nav__active" : ""} onClick={() => openView("evidence")} type="button"><FileCheck2 size={20} /><span>Evidence</span></button>
         <button className={activeView === "agents" ? "mobile-nav__active" : ""} onClick={() => openView("agents")} type="button"><Bot size={20} /><span>Agents</span></button>

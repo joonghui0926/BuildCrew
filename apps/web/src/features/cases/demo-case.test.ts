@@ -30,4 +30,18 @@ describe("Mission Bay coordination demo", () => {
     expect(selected?.connectorOffsetMm).toBe(25);
     expect(selected?.scheduleImpactDays).toBe(0);
   });
+
+  it("searches broadly before spending BIM resources on a shortlist", () => {
+    const bimReviewed = missionBayCase.discoveredAlternatives.filter(
+      (alternative) => alternative.stage === "bim_reviewed",
+    );
+
+    expect(missionBayCase.discoveredAlternatives).toHaveLength(14);
+    expect(bimReviewed).toHaveLength(3);
+    expect(
+      missionBayCase.discoveredAlternatives.every(
+        (alternative) => alternative.discoverySource && alternative.decision,
+      ),
+    ).toBe(true);
+  });
 });

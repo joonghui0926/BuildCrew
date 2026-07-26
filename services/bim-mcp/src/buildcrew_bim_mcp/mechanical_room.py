@@ -281,17 +281,44 @@ class MechanicalRoomScene:
     def add_clearance(self, x: float, y: float) -> None:
         self.add(_box((4.05, 2.55, 1.85), (x - 0.20, y, 0.93), "#BCE8C9", 35), "maintenance-clearance")
 
-    def build(self) -> trimesh.Scene:
+    def build(self, candidate_id: str = "candidate-c") -> trimesh.Scene:
         self.add_room()
         self.add_pipe_train(-2.15, selected=True)
         self.add_pipe_train(2.15, selected=False)
         self.add_clearance(2.0, -2.15)
+        if candidate_id == "candidate-a":
+            self.add(
+                _cylinder(
+                    0.24,
+                    3.3,
+                    (3.25, -2.15, 1.12),
+                    COLORS["red"],
+                    "z",
+                    64,
+                    180,
+                ),
+                "critical-clash-existing-return",
+            )
+        elif candidate_id == "candidate-b":
+            self.add(
+                _box(
+                    (0.34, 3.0, 2.3),
+                    (0.25, -2.15, 1.15),
+                    COLORS["red"],
+                    135,
+                ),
+                "critical-clearance-wall",
+            )
         return self.scene
 
 
-def export_m601_dajoong_bim(destination: Path) -> Path:
+def export_m601_dajoong_bim(
+    destination: Path,
+    *,
+    candidate_id: str = "candidate-c",
+) -> Path:
     destination.parent.mkdir(parents=True, exist_ok=True)
-    scene = MechanicalRoomScene().build()
+    scene = MechanicalRoomScene().build(candidate_id)
     destination.write_bytes(scene.export(file_type="glb"))
     return destination
 

@@ -13,6 +13,11 @@ export interface Candidate {
   manufacturer: string;
   model: string;
   label: string;
+  supplier: string;
+  quoteReference: string;
+  inventory: string;
+  verifiedAt: string;
+  shipFrom: string;
   status: CandidateStatus;
   arrival: string;
   evidenceCoverage: number;
@@ -25,6 +30,24 @@ export interface Candidate {
   costDelta: number;
   scheduleImpactDays: number;
   reason: string;
+}
+
+export type AlternativeStage =
+  | "bim_reviewed"
+  | "technical_reject"
+  | "evidence_reject"
+  | "schedule_reject";
+
+export interface DiscoveredAlternative {
+  id: string;
+  manufacturer: string;
+  model: string;
+  discoverySource: string;
+  evidence: string;
+  delivery: string;
+  stage: AlternativeStage;
+  decision: string;
+  candidateId?: string;
 }
 
 export interface PipelineStage {
@@ -54,6 +77,7 @@ export interface DemoCase {
   progress: number;
   selectedCandidateId: string;
   candidates: Candidate[];
+  discoveredAlternatives: DiscoveredAlternative[];
   pipeline: PipelineStage[];
   evidence: EvidenceItem[];
 }

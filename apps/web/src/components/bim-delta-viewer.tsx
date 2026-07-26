@@ -6,14 +6,14 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import type { Candidate } from "@/features/cases/types";
 
+THREE.Cache.enabled = true;
+
 type ViewerMode = "model" | "change" | "clearance";
 
 interface BimDeltaViewerProps {
   candidate?: Candidate;
   compact?: boolean;
 }
-
-const MODEL_URL = "/demo/m601-dajoong-bim.glb";
 
 function disposeMaterial(material: THREE.Material) {
   Object.values(material).forEach((value) => {
@@ -26,6 +26,9 @@ export function BimDeltaViewer({ candidate, compact = false }: BimDeltaViewerPro
   const hostRef = useRef<HTMLDivElement>(null);
   const [mode, setMode] = useState<ViewerMode>("change");
   const [loadingState, setLoadingState] = useState<"loading" | "ready" | "error">("loading");
+  const modelUrl = candidate
+    ? `/demo/m601-${candidate.id}.glb`
+    : "/demo/m601-dajoong-bim.glb";
 
   useEffect(() => {
     const host = hostRef.current;
@@ -57,14 +60,49 @@ export function BimDeltaViewer({ candidate, compact = false }: BimDeltaViewerPro
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 0.92;
     host.replaceChildren(renderer.domElement);
+    const keepNavigationInsideViewer = (event: MouseEvent) => {
+      if (event.button !== 1) return;
+      event.preventDefault();
+      event.stopPropagation();
+    };
+    const keepWheelInsideViewer = (event: WheelEvent) => {
+      event.preventDefault();
+      event.stopPropagation();
+    };
+    renderer.domElement.addEventListener("mousedown", keepNavigationInsideViewer, { passive: false });
+    renderer.domElement.addEventListener("auxclick", keepNavigationInsideViewer, { passive: false });
+    renderer.domElement.addEventListener("wheel", keepWheelInsideViewer, { passive: false });
 
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.055;
+    controls.enablePan = true;
+    controls.enableRotate = true;
+    controls.enableZoom = true;
+    controls.mouseButtons.LEFT = THREE.MOUSE.ROTATE;
+    controls.mouseButtons.MIDDLE = THREE.MOUSE.PAN;
+    controls.mouseButtons.RIGHT = THREE.MOUSE.PAN;
+    controls.panSpeed = 0.9;
+    controls.rotateSpeed = 0.72;
+    controls.screenSpacePanning = true;
+    controls.zoomSpeed = 1.1;
+    controls.zoomToCursor = true;
     controls.target.set(5, 1, 2.8);
     controls.minDistance = 5;
     controls.maxDistance = 42;
     controls.maxPolarAngle = Math.PI * 0.495;
+    const syncCameraState = () => {
+      host.setAttribute(
+        "data-camera-position",
+        camera.position.toArray().map((value) => value.toFixed(3)).join(","),
+      );
+      host.setAttribute(
+        "data-camera-target",
+        controls.target.toArray().map((value) => value.toFixed(3)).join(","),
+      );
+    };
+    controls.addEventListener("change", syncCameraState);
+    syncCameraState();
 
     scene.add(new THREE.HemisphereLight(0xffffff, 0x56625c, 1.65));
     const key = new THREE.DirectionalLight(0xffffff, 2.8);
@@ -83,7 +121,7 @@ export function BimDeltaViewer({ candidate, compact = false }: BimDeltaViewerPro
     let model: THREE.Group | null = null;
     let cancelled = false;
     new GLTFLoader().load(
-      MODEL_URL,
+      modelUrl,
       (gltf) => {
         if (cancelled) return;
         model = gltf.scene;
@@ -113,6 +151,14 @@ export function BimDeltaViewer({ candidate, compact = false }: BimDeltaViewerPro
             if (object.name.includes("removed-existing")) {
               next.transparent = true;
               next.opacity = 0.24;
+              next.depthWrite = false;
+            }
+            if (
+              object.name.includes("critical-clash")
+              || object.name.includes("critical-clearance")
+            ) {
+              next.transparent = true;
+              next.opacity = 0.62;
               next.depthWrite = false;
             }
             return next;
@@ -169,7 +215,11 @@ export function BimDeltaViewer({ candidate, compact = false }: BimDeltaViewerPro
       cancelled = true;
       cancelAnimationFrame(frame);
       observer.disconnect();
+      controls.removeEventListener("change", syncCameraState);
       controls.dispose();
+      renderer.domElement.removeEventListener("mousedown", keepNavigationInsideViewer);
+      renderer.domElement.removeEventListener("auxclick", keepNavigationInsideViewer);
+      renderer.domElement.removeEventListener("wheel", keepWheelInsideViewer);
       scene.traverse((object) => {
         if (!(object instanceof THREE.Mesh)) return;
         object.geometry.dispose();
@@ -179,12 +229,17 @@ export function BimDeltaViewer({ candidate, compact = false }: BimDeltaViewerPro
       renderer.dispose();
       host.replaceChildren();
     };
-  }, [compact, mode]);
+  }, [compact, mode, modelUrl]);
 
-  const status = candidate?.status === "rejected" ? "REVIEWED" : "INSTALLABLE";
+  const status = candidate?.status === "rejected" ? "REJECTED" : "INSTALLABLE";
   return (
     <section className={compact ? "bim-viewer bim-viewer--compact" : "bim-viewer"} aria-label="Actual Dajoong-generated BIM viewer">
-      <div ref={hostRef} className="bim-viewer__canvas" />
+      <div
+        ref={hostRef}
+        className="bim-viewer__canvas"
+        data-camera-position={compact ? "14.000,8.000,15.000" : "16.000,10.000,16.000"}
+        data-camera-target="5.000,1.000,2.800"
+      />
       {loadingState === "loading" && (
         <div className="bim-viewer__loading"><span />Loading generated GLB</div>
       )}
@@ -193,7 +248,7 @@ export function BimDeltaViewer({ candidate, compact = false }: BimDeltaViewerPro
       )}
       <div className="bim-viewer__topline">
         <div>
-          <span className="eyebrow">DAJOONG SCENEGRAPH · REV 37</span>
+          <span className="eyebrow">COORDINATED MODEL · REV 37</span>
           <strong>{candidate ? `${candidate.manufacturer} ${candidate.model}` : "M-601 Mechanical Room"}</strong>
         </div>
         <span className={`verdict ${status === "INSTALLABLE" ? "verdict--recommended" : "verdict--rejected"}`}>
@@ -216,7 +271,11 @@ export function BimDeltaViewer({ candidate, compact = false }: BimDeltaViewerPro
           </div>
           <div className="bim-viewer__legend">
             <span><i className="legend-dot legend-dot--new" />Replacement</span>
-            <span><i className="legend-dot legend-dot--impact" />Modified spool</span>
+            {candidate?.criticalClashes ? (
+              <span><i className="legend-dot legend-dot--critical" />Critical conflict</span>
+            ) : (
+              <span><i className="legend-dot legend-dot--impact" />Modified spool</span>
+            )}
             <span><i className="legend-dot legend-dot--old" />Existing envelope</span>
           </div>
           <div className="bim-viewer__provenance">
@@ -226,7 +285,7 @@ export function BimDeltaViewer({ candidate, compact = false }: BimDeltaViewerPro
             <span />
             <strong>IFC4 + GLB</strong>
           </div>
-          <div className="bim-viewer__hint">Drag to orbit · Scroll to zoom</div>
+          <div className="bim-viewer__hint">Left drag: rotate · Middle drag: pan · Wheel: zoom</div>
         </>
       )}
     </section>
