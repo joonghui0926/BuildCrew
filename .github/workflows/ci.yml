@@ -1,0 +1,38 @@
+name: BuildCrew CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - "agent/**"
+
+jobs:
+  web-and-functions:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.9.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --dir apps/web typecheck
+      - run: pnpm --dir apps/web test
+      - run: pnpm --dir apps/web build
+      - run: pnpm --dir functions test
+      - run: pnpm --dir functions build
+
+  bim-mcp:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: python -m pip install -e "services/bim-mcp[dev]"
+      - run: python -m pytest services/bim-mcp/tests

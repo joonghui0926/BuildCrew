@@ -1,0 +1,98 @@
+{
+  "schema_version": "1.0.0",
+  "case_id": "BC-2026-0142",
+  "candidate_id": "candidate-c",
+  "equipment_tag": "P-401",
+  "ifc_class": "IfcPump",
+  "manufacturer": "Armstrong",
+  "model": "4030 4x3x10",
+  "dimensions_mm": {
+    "width": 1780.0,
+    "depth": 760.0,
+    "height": 980.0,
+    "base_length": 1840.0,
+    "base_width": 780.0
+  },
+  "connectors": [
+    {
+      "connector_id": "inlet",
+      "system": "hydronic_return",
+      "diameter_mm": {
+        "value_mm": 100.0,
+        "evidence": {
+          "source_id": "inlet-diameter",
+          "document_name": "Armstrong_4030_Submittal.pdf",
+          "page_or_sheet": "6",
+          "source_region": null,
+          "source_hash": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+          "confidence": 0.99,
+          "grade": "A"
+        }
+      },
+      "position_mm": [
+        890.0,
+        0.0,
+        520.0
+      ],
+      "direction": [
+        1.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "connector_id": "outlet",
+      "system": "hydronic_supply",
+      "diameter_mm": {
+        "value_mm": 80.0,
+        "evidence": {
+          "source_id": "outlet-diameter",
+          "document_name": "Armstrong_4030_Submittal.pdf",
+          "page_or_sheet": "6",
+          "source_region": null,
+          "source_hash": "1111111111111111111111111111111111111111111111111111111111111111",
+          "confidence": 0.99,
+          "grade": "A"
+        }
+      },
+      "position_mm": [
+        440.0,
+        0.0,
+        980.0
+      ],
+      "direction": [
+        0.0,
+        0.0,
+        1.0
+      ]
+    }
+  ],
+  "clearance_zones": [
+    {
+      "zone_id": "motor-removal",
+      "purpose": "motor removal",
+      "size_mm": [
+        915.0,
+        1000.0,
+        1200.0
+      ],
+      "origin_mm": [
+        -1780.0,
+        -500.0,
+        0.0
+      ],
+      "evidence": {
+        "source_id": "motor-removal-clearance",
+        "document_name": "Armstrong_4030_Installation_Manual.pdf",
+        "page_or_sheet": "18",
+        "source_region": null,
+        "source_hash": "2222222222222222222222222222222222222222222222222222222222222222",
+        "confidence": 0.98,
+        "grade": "A"
+      }
+    }
+  ],
+  "review_state": "verified",
+  "perception_mode": "verified_dimensions",
+  "dajoong_proposal": null
+}

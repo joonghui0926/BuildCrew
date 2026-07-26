@@ -1,0 +1,7 @@
+{
+  "critical_field_count": 7,
+  "verified_critical_field_count": 7,
+  "minimum_critical_confidence": 0.98,
+  "export_allowed": true,
+  "review_state": "verified"
+}

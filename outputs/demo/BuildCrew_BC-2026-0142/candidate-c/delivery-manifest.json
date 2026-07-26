@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0.0",
+  "case_id": "BC-2026-0142",
+  "candidate_id": "candidate-c",
+  "files": [
+    "C:\\Users\\jjoon\\OneDrive\\Documents\\BuildCrew\\outputs\\demo\\BuildCrew_BC-2026-0142\\candidate-c\\candidate-c-coordinated.glb",
+    "C:\\Users\\jjoon\\OneDrive\\Documents\\BuildCrew\\outputs\\demo\\BuildCrew_BC-2026-0142\\candidate-c\\candidate-c-coordination.bcfzip",
+    "C:\\Users\\jjoon\\OneDrive\\Documents\\BuildCrew\\outputs\\demo\\BuildCrew_BC-2026-0142\\candidate-c\\candidate-c.glb",
+    "C:\\Users\\jjoon\\OneDrive\\Documents\\BuildCrew\\outputs\\demo\\BuildCrew_BC-2026-0142\\candidate-c\\candidate-c.ifc",
+    "C:\\Users\\jjoon\\OneDrive\\Documents\\BuildCrew\\outputs\\demo\\BuildCrew_BC-2026-0142\\candidate-c\\confidence-report.json",
+    "C:\\Users\\jjoon\\OneDrive\\Documents\\BuildCrew\\outputs\\demo\\BuildCrew_BC-2026-0142\\candidate-c\\coordination-report.json",
+    "C:\\Users\\jjoon\\OneDrive\\Documents\\BuildCrew\\outputs\\demo\\BuildCrew_BC-2026-0142\\candidate-c\\placement.json",
+    "C:\\Users\\jjoon\\OneDrive\\Documents\\BuildCrew\\outputs\\demo\\BuildCrew_BC-2026-0142\\candidate-c\\semantic-properties.json",
+    "C:\\Users\\jjoon\\OneDrive\\Documents\\BuildCrew\\outputs\\demo\\BuildCrew_BC-2026-0142\\candidate-c\\source-map.json"
+  ],
+  "industrial_formats": [
+    "IFC4",
+    "GLB",
+    "BCF 2.1",
+    "JSON"
+  ],
+  "revit_family_available": false,
+  "review_state": "verified"
+}

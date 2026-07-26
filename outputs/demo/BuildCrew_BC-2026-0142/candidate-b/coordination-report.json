@@ -1,0 +1,33 @@
+{
+  "candidate_id": "candidate-b",
+  "verdict": "reject",
+  "critical_clashes": [],
+  "clearance_violations": [
+    {
+      "type": "clearance_violation",
+      "zone_id": "motor-removal",
+      "purpose": "motor removal",
+      "obstacle_id": "WALL-C01",
+      "label": "Concrete shear wall",
+      "description": "motor removal clearance overlaps Concrete shear wall."
+    }
+  ],
+  "connector_offsets": [
+    {
+      "connector_id": "inlet",
+      "offset_mm": 25.0,
+      "tolerance_mm": 10.0,
+      "within_tolerance": false
+    }
+  ],
+  "required_modifications": [
+    {
+      "type": "connector_reroute",
+      "connector_id": "inlet",
+      "offset_mm": 25.0,
+      "description": "Provide a 25 mm spool/routing adjustment."
+    }
+  ],
+  "bcfzip": "C:\\Users\\jjoon\\OneDrive\\Documents\\BuildCrew\\outputs\\demo\\mcp_artifacts\\BC-2026-0142\\candidate-b\\candidate-b-coordination.bcfzip",
+  "report_json": "C:\\Users\\jjoon\\OneDrive\\Documents\\BuildCrew\\outputs\\demo\\mcp_artifacts\\BC-2026-0142\\candidate-b\\coordination-report.json"
+}

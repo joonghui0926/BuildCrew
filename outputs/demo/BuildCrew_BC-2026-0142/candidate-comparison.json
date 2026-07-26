@@ -1,0 +1,70 @@
+[
+  {
+    "candidate_id": "candidate-a",
+    "manufacturer": "KSB",
+    "model": "Etanorm 065-040-250",
+    "verdict": "reject",
+    "critical_clashes": [
+      {
+        "type": "hard_clash",
+        "obstacle_id": "CHWR-24",
+        "label": "Existing chilled-water return pipe",
+        "discipline": "Mechanical",
+        "description": "Candidate envelope intersects Existing chilled-water return pipe."
+      }
+    ],
+    "clearance_violations": [],
+    "connector_offsets": [
+      {
+        "connector_id": "inlet",
+        "offset_mm": 135.0,
+        "tolerance_mm": 10.0,
+        "within_tolerance": false
+      }
+    ],
+    "delivery_manifest": "C:\\Users\\jjoon\\OneDrive\\Documents\\BuildCrew\\outputs\\demo\\BuildCrew_BC-2026-0142\\candidate-a\\delivery-manifest.json"
+  },
+  {
+    "candidate_id": "candidate-b",
+    "manufacturer": "Grundfos",
+    "model": "NB 65-125/142",
+    "verdict": "reject",
+    "critical_clashes": [],
+    "clearance_violations": [
+      {
+        "type": "clearance_violation",
+        "zone_id": "motor-removal",
+        "purpose": "motor removal",
+        "obstacle_id": "WALL-C01",
+        "label": "Concrete shear wall",
+        "description": "motor removal clearance overlaps Concrete shear wall."
+      }
+    ],
+    "connector_offsets": [
+      {
+        "connector_id": "inlet",
+        "offset_mm": 25.0,
+        "tolerance_mm": 10.0,
+        "within_tolerance": false
+      }
+    ],
+    "delivery_manifest": "C:\\Users\\jjoon\\OneDrive\\Documents\\BuildCrew\\outputs\\demo\\BuildCrew_BC-2026-0142\\candidate-b\\delivery-manifest.json"
+  },
+  {
+    "candidate_id": "candidate-c",
+    "manufacturer": "Armstrong",
+    "model": "4030 4x3x10",
+    "verdict": "fit_with_modification",
+    "critical_clashes": [],
+    "clearance_violations": [],
+    "connector_offsets": [
+      {
+        "connector_id": "inlet",
+        "offset_mm": 25.0,
+        "tolerance_mm": 10.0,
+        "within_tolerance": false
+      }
+    ],
+    "delivery_manifest": "C:\\Users\\jjoon\\OneDrive\\Documents\\BuildCrew\\outputs\\demo\\BuildCrew_BC-2026-0142\\candidate-c\\delivery-manifest.json"
+  }
+]

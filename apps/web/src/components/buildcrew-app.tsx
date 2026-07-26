@@ -1,0 +1,406 @@
+"use client";
+
+import { useEffect, useMemo, useRef, useState } from "react";
+import type { User } from "firebase/auth";
+import {
+  GoogleAuthProvider,
+  onAuthStateChanged,
+  signInWithPopup,
+  signOut,
+} from "firebase/auth";
+import {
+  ArrowDownToLine,
+  ArrowRight,
+  Bell,
+  Box,
+  Check,
+  ChevronRight,
+  CircleCheck,
+  Clock3,
+  FileCheck2,
+  FolderOpen,
+  Gauge,
+  Menu,
+  Plus,
+  Search,
+  ShieldCheck,
+  TriangleAlert,
+  X,
+} from "lucide-react";
+import { BrandLogo } from "./brand-logo";
+import { BimDeltaViewer } from "./bim-delta-viewer";
+import { createAndStartCase } from "@/features/cases/firebase-case";
+import { missionBayCase } from "@/features/cases/demo-case";
+import type { Candidate } from "@/features/cases/types";
+import { firebaseAuth } from "@/lib/firebase/client";
+import { formatUsd } from "@/lib/format";
+
+type WorkspaceTab = "coordination" | "evidence" | "deliverables";
+
+function CandidateRow({
+  candidate,
+  selected,
+  onSelect,
+}: {
+  candidate: Candidate;
+  selected: boolean;
+  onSelect: () => void;
+}) {
+  return (
+    <button
+      className={selected ? "candidate-row candidate-row--selected" : "candidate-row"}
+      onClick={onSelect}
+      type="button"
+    >
+      <span className={`candidate-state candidate-state--${candidate.status}`}>
+        {candidate.status === "recommended" ? <Check size={14} /> : <X size={14} />}
+      </span>
+      <span className="candidate-copy">
+        <span>{candidate.label}</span>
+        <strong>{candidate.manufacturer} · {candidate.model}</strong>
+      </span>
+      <span className="candidate-score">
+        <strong>{candidate.criticalClashes}</strong>
+        <small>critical</small>
+      </span>
+      <ChevronRight size={17} aria-hidden="true" />
+    </button>
+  );
+}
+
+export function BuildCrewApp() {
+  const [selectedCandidateId, setSelectedCandidateId] = useState(missionBayCase.selectedCandidateId);
+  const [activeTab, setActiveTab] = useState<WorkspaceTab>("coordination");
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
+  const [showNewCase, setShowNewCase] = useState(false);
+  const [notice, setNotice] = useState<string | null>(null);
+  const [delayEmail, setDelayEmail] = useState("");
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+  const [isCreating, setIsCreating] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
+  const fileInputReference = useRef<HTMLInputElement>(null);
+  const selectedCandidate = useMemo(
+    () => missionBayCase.candidates.find((item) => item.id === selectedCandidateId) ?? missionBayCase.candidates[2],
+    [selectedCandidateId],
+  );
+
+  useEffect(() => onAuthStateChanged(firebaseAuth, setUser), []);
+
+  const notify = (message: string) => {
+    setNotice(message);
+    window.setTimeout(() => setNotice(null), 3200);
+  };
+
+  const authenticate = async () => {
+    if (firebaseAuth.currentUser) return firebaseAuth.currentUser;
+    const credential = await signInWithPopup(firebaseAuth, new GoogleAuthProvider());
+    return credential.user;
+  };
+
+  const handleAccount = async () => {
+    try {
+      if (user) {
+        await signOut(firebaseAuth);
+        notify("Signed out.");
+        return;
+      }
+      await authenticate();
+      notify("Signed in with Google.");
+    } catch (error) {
+      notify(error instanceof Error ? error.message : "Google sign-in failed.");
+    }
+  };
+
+  const handleCreateCase = async () => {
+    if (!delayEmail.trim()) {
+      notify("Paste the supplier delay email first.");
+      return;
+    }
+    setIsCreating(true);
+    try {
+      const authenticatedUser = await authenticate();
+      const result = await createAndStartCase({
+        delayEmail: delayEmail.trim(),
+        files: selectedFiles,
+        user: authenticatedUser,
+      });
+      setShowNewCase(false);
+      setDelayEmail("");
+      setSelectedFiles([]);
+      notify(
+        result.crewAiConnected
+          ? `${result.caseId} started in CrewAI.`
+          : `${result.caseId} is queued. Connect CrewAI secrets to continue.`,
+      );
+    } catch (error) {
+      notify(error instanceof Error ? error.message : "The case could not be created.");
+    } finally {
+      setIsCreating(false);
+    }
+  };
+
+  const initials =
+    user?.displayName
+      ?.split(/\s+/)
+      .map((part) => part[0])
+      .join("")
+      .slice(0, 2)
+      .toUpperCase() ?? "JH";
+
+  return (
+    <div className="app-shell">
+      <header className="mobile-header">
+        <button className="icon-button" onClick={() => setSidebarOpen(true)} type="button" aria-label="Open navigation">
+          <Menu size={22} />
+        </button>
+        <BrandLogo />
+        <button className="icon-button" type="button" aria-label="Notifications">
+          <Bell size={20} />
+        </button>
+      </header>
+
+      <aside className={isSidebarOpen ? "sidebar sidebar--open" : "sidebar"}>
+        <div className="sidebar__top">
+          <BrandLogo />
+          <button className="sidebar__close icon-button" onClick={() => setSidebarOpen(false)} type="button">
+            <X size={20} />
+          </button>
+        </div>
+        <button className="new-case-button" onClick={() => setShowNewCase(true)} type="button">
+          <Plus size={18} />
+          New disruption case
+        </button>
+        <nav className="primary-nav" aria-label="Primary navigation">
+          <a className="nav-link nav-link--active" href="#workspace"><Gauge size={18} />Active cases</a>
+          <a className="nav-link" href="#deliverables"><FolderOpen size={18} />Projects</a>
+          <a className="nav-link" href="#evidence"><FileCheck2 size={18} />Evidence library</a>
+        </nav>
+        <div className="sidebar__section">
+          <span className="sidebar__label">OPEN CASES</span>
+          <button className="case-link case-link--active" type="button">
+            <span className="case-link__marker" />
+            <span>
+              <strong>{missionBayCase.equipmentTag} · Pump delay</strong>
+              <small>Awaiting your approval</small>
+            </span>
+          </button>
+          <button className="case-link" type="button">
+            <span className="case-link__marker case-link__marker--amber" />
+            <span>
+              <strong>AHU-12 · Backorder</strong>
+              <small>Collecting evidence</small>
+            </span>
+          </button>
+        </div>
+        <button className="sidebar__account" onClick={handleAccount} type="button">
+          <span className="avatar">{initials}</span>
+          <span>
+            <strong>{user?.displayName ?? "Connect Google account"}</strong>
+            <small>{user?.email ?? "Firebase Authentication"}</small>
+          </span>
+          <ChevronRight size={16} />
+        </button>
+      </aside>
+      {isSidebarOpen && <button className="sidebar-scrim" onClick={() => setSidebarOpen(false)} aria-label="Close navigation" />}
+
+      <main className="workspace" id="workspace">
+        <div className="workspace__topbar">
+          <div className="search-field">
+            <Search size={17} />
+            <span>Search cases, equipment, evidence</span>
+          </div>
+          <div className="top-actions">
+            <button className="icon-button" type="button"><Bell size={19} /></button>
+            <button className="text-button" type="button">Help</button>
+          </div>
+        </div>
+
+        <section className="case-hero">
+          <div>
+            <div className="case-breadcrumb">
+              Active cases <ChevronRight size={14} /> {missionBayCase.id}
+            </div>
+            <h1>{missionBayCase.equipmentTag} · {missionBayCase.equipmentName}</h1>
+            <p>{missionBayCase.project} · Required on site {missionBayCase.requiredOnSite}</p>
+          </div>
+          <div className="case-hero__risk">
+            <span>{missionBayCase.delayDays}</span>
+            <small>days of delay avoided</small>
+          </div>
+        </section>
+
+        <section className="pipeline" aria-label="BuildCrew case stages">
+          {missionBayCase.pipeline.map((stage, index) => (
+            <div className={`pipeline-stage pipeline-stage--${stage.state}`} key={stage.id}>
+              <div className="pipeline-stage__track">
+                <span>{stage.state === "done" ? <Check size={13} /> : index + 1}</span>
+              </div>
+              <strong>{stage.label}</strong>
+              <small>{stage.detail}</small>
+            </div>
+          ))}
+        </section>
+
+        <div className="workspace-grid">
+          <div className="model-area">
+            <BimDeltaViewer candidate={selectedCandidate} />
+            <div className="workspace-tabs" role="tablist">
+              <button className={activeTab === "coordination" ? "workspace-tab workspace-tab--active" : "workspace-tab"} onClick={() => setActiveTab("coordination")} type="button">Coordination</button>
+              <button className={activeTab === "evidence" ? "workspace-tab workspace-tab--active" : "workspace-tab"} onClick={() => setActiveTab("evidence")} type="button">Evidence <span>31</span></button>
+              <button className={activeTab === "deliverables" ? "workspace-tab workspace-tab--active" : "workspace-tab"} onClick={() => setActiveTab("deliverables")} type="button">Deliverables <span>8</span></button>
+            </div>
+
+            {activeTab === "coordination" && (
+              <section className="detail-strip">
+                <div className="detail-metric">
+                  <span className="metric-icon metric-icon--green"><CircleCheck size={18} /></span>
+                  <span><small>Hard requirements</small><strong>{selectedCandidate.requirementsPassed} / {selectedCandidate.requirementsTotal}</strong></span>
+                </div>
+                <div className="detail-metric">
+                  <span className={selectedCandidate.criticalClashes ? "metric-icon metric-icon--red" : "metric-icon metric-icon--green"}><TriangleAlert size={18} /></span>
+                  <span><small>Critical clashes</small><strong>{selectedCandidate.criticalClashes}</strong></span>
+                </div>
+                <div className="detail-metric">
+                  <span className="metric-icon metric-icon--amber"><ArrowRight size={18} /></span>
+                  <span><small>Pipe modification</small><strong>{selectedCandidate.connectorOffsetMm} mm</strong></span>
+                </div>
+                <div className="detail-note">
+                  <strong>Change impact</strong>
+                  <p>{selectedCandidate.reason}</p>
+                </div>
+              </section>
+            )}
+
+            {activeTab === "evidence" && (
+              <section className="evidence-list" id="evidence">
+                {missionBayCase.evidence.map((item) => (
+                  <div className="evidence-row" key={item.id}>
+                    <span className={`evidence-grade evidence-grade--${item.grade.toLowerCase()}`}>{item.grade}</span>
+                    <span><small>{item.claim}</small><strong>{item.value}</strong></span>
+                    <span className="evidence-source">{item.source}</span>
+                    <span>{Math.round(item.confidence * 100)}%</span>
+                  </div>
+                ))}
+              </section>
+            )}
+
+            {activeTab === "deliverables" && (
+              <section className="deliverable-list" id="deliverables">
+                {["P-401_Armstrong_Replacement.ifc", "P-401_Armstrong_Replacement.glb", "P-401_Coordination.bcfzip", "Substitution_Request_SR-081.pdf"].map((file, index) => (
+                  <button className="deliverable-row" key={file} type="button" onClick={() => notify("Demo package is ready in the repository output folder.")}>
+                    <span className="file-kind">{file.split(".").pop()?.toUpperCase()}</span>
+                    <span><strong>{file}</strong><small>{index < 2 ? "BIM model · source-traceable" : "Approval package"}</small></span>
+                    <ArrowDownToLine size={18} />
+                  </button>
+                ))}
+              </section>
+            )}
+          </div>
+
+          <aside className="decision-rail">
+            <div className="decision-rail__heading">
+              <span className="eyebrow">CANDIDATE REVIEW</span>
+              <h2>One replacement fits.</h2>
+              <p>Three supplier options passed technical screening. Only one survives BIM coordination.</p>
+            </div>
+
+            <div className="candidate-stack">
+              {missionBayCase.candidates.map((candidate) => (
+                <CandidateRow
+                  candidate={candidate}
+                  key={candidate.id}
+                  selected={candidate.id === selectedCandidateId}
+                  onSelect={() => setSelectedCandidateId(candidate.id)}
+                />
+              ))}
+            </div>
+
+            <div className="decision-summary">
+              <div className="decision-summary__title">
+                <span className="metric-icon metric-icon--green"><ShieldCheck size={19} /></span>
+                <span><small>Recommended</small><strong>{selectedCandidate.manufacturer} {selectedCandidate.model}</strong></span>
+              </div>
+              <dl>
+                <div><dt>Arrival</dt><dd>{selectedCandidate.arrival}</dd></div>
+                <div><dt>Total installed cost</dt><dd>{formatUsd(selectedCandidate.totalInstalledCost)}</dd></div>
+                <div><dt>Cost delta</dt><dd>+{formatUsd(selectedCandidate.costDelta)}</dd></div>
+                <div><dt>Schedule impact</dt><dd className="positive">{selectedCandidate.scheduleImpactDays} days</dd></div>
+                <div><dt>Evidence coverage</dt><dd>{selectedCandidate.evidenceCoverage}%</dd></div>
+              </dl>
+            </div>
+
+            <div className="approval-callout">
+              <Clock3 size={18} />
+              <span><strong>Gate A · Internal submission</strong><small>Approval sends the package for engineering review. It does not issue a purchase order.</small></span>
+            </div>
+            <button className="approve-button" onClick={() => notify("Internal submission approved in demo mode.")} type="button">
+              Approve for submission <ArrowRight size={18} />
+            </button>
+            <button className="secondary-button" onClick={() => notify("Revision request opened.")} type="button">
+              Request revision
+            </button>
+          </aside>
+        </div>
+      </main>
+
+      <nav className="mobile-nav" aria-label="Mobile navigation">
+        <button className="mobile-nav__active" type="button"><Gauge size={20} /><span>Cases</span></button>
+        <button type="button"><Box size={20} /><span>Model</span></button>
+        <button type="button"><FileCheck2 size={20} /><span>Evidence</span></button>
+      </nav>
+
+      {showNewCase && (
+        <div className="modal-layer" role="dialog" aria-modal="true" aria-labelledby="new-case-title">
+          <button className="modal-scrim" onClick={() => setShowNewCase(false)} aria-label="Close new case" />
+          <section className="new-case-sheet">
+            <button className="new-case-sheet__close icon-button" onClick={() => setShowNewCase(false)} type="button"><X size={20} /></button>
+            <span className="eyebrow">NEW DISRUPTION</span>
+            <h2 id="new-case-title">What was delayed?</h2>
+            <p>Start with the supplier email. BuildCrew will identify the project and request only missing evidence.</p>
+            <label className="field-label" htmlFor="delay-email">Supplier delay email</label>
+            <textarea
+              id="delay-email"
+              onChange={(event) => setDelayEmail(event.target.value)}
+              placeholder="Paste the supplier delay email here…"
+              rows={7}
+              value={delayEmail}
+            />
+            <input
+              accept=".pdf,.ifc,.dwg,.dxf,.doc,.docx,.xls,.xlsx,.png,.jpg,.jpeg"
+              className="visually-hidden"
+              multiple
+              onChange={(event) => setSelectedFiles(Array.from(event.target.files ?? []))}
+              ref={fileInputReference}
+              type="file"
+            />
+            <button
+              className="drop-zone"
+              onClick={() => fileInputReference.current?.click()}
+              type="button"
+            >
+              <Plus size={20} />
+              <span>
+                <strong>
+                  {selectedFiles.length
+                    ? `${selectedFiles.length} project file${selectedFiles.length === 1 ? "" : "s"} selected`
+                    : "Add project files"}
+                </strong>
+                <small>Specification, drawings, IFC, original submittal</small>
+              </span>
+            </button>
+            <button
+              className="approve-button"
+              disabled={isCreating}
+              onClick={handleCreateCase}
+              type="button"
+            >
+              {isCreating ? "Creating secure case…" : "Create case"} <ArrowRight size={18} />
+            </button>
+          </section>
+        </div>
+      )}
+
+      {notice && <div className="toast"><CircleCheck size={18} />{notice}</div>}
+    </div>
+  );
+}

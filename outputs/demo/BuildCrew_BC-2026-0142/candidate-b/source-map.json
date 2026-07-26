@@ -1,0 +1,67 @@
+{
+  "width": {
+    "source_id": "width",
+    "document_name": "Armstrong_4030_Submittal.pdf",
+    "page_or_sheet": "6",
+    "source_region": null,
+    "source_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "confidence": 0.99,
+    "grade": "A"
+  },
+  "depth": {
+    "source_id": "depth",
+    "document_name": "Armstrong_4030_Submittal.pdf",
+    "page_or_sheet": "6",
+    "source_region": null,
+    "source_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "confidence": 0.99,
+    "grade": "A"
+  },
+  "height": {
+    "source_id": "height",
+    "document_name": "Armstrong_4030_Submittal.pdf",
+    "page_or_sheet": "6",
+    "source_region": null,
+    "source_hash": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+    "confidence": 0.99,
+    "grade": "A"
+  },
+  "base_length": {
+    "source_id": "base-length",
+    "document_name": "Armstrong_4030_Submittal.pdf",
+    "page_or_sheet": "6",
+    "source_region": null,
+    "source_hash": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+    "confidence": 0.98,
+    "grade": "A"
+  },
+  "base_width": {
+    "source_id": "base-width",
+    "document_name": "Armstrong_4030_Submittal.pdf",
+    "page_or_sheet": "6",
+    "source_region": null,
+    "source_hash": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+    "confidence": 0.98,
+    "grade": "A"
+  },
+  "connectors": {
+    "inlet": {
+      "source_id": "inlet-diameter",
+      "document_name": "Armstrong_4030_Submittal.pdf",
+      "page_or_sheet": "6",
+      "source_region": null,
+      "source_hash": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "confidence": 0.99,
+      "grade": "A"
+    },
+    "outlet": {
+      "source_id": "outlet-diameter",
+      "document_name": "Armstrong_4030_Submittal.pdf",
+      "page_or_sheet": "6",
+      "source_region": null,
+      "source_hash": "1111111111111111111111111111111111111111111111111111111111111111",
+      "confidence": 0.99,
+      "grade": "A"
+    }
+  }
+}

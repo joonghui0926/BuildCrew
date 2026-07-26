@@ -1,0 +1,14 @@
+{
+  "case_id": "BC-2026-0142",
+  "candidate_id": "candidate-b",
+  "replace_element_id": "P-401-EXISTING",
+  "origin_mm": [
+    0,
+    0,
+    0
+  ],
+  "rotation_degrees": 0,
+  "coordinated_glb": "C:\\Users\\jjoon\\OneDrive\\Documents\\BuildCrew\\outputs\\demo\\mcp_artifacts\\BC-2026-0142\\candidate-b\\candidate-b-coordinated.glb",
+  "permanent_model_update": false,
+  "review_state": "verified"
+}

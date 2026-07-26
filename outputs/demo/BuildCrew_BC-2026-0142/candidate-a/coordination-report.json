@@ -1,0 +1,32 @@
+{
+  "candidate_id": "candidate-a",
+  "verdict": "reject",
+  "critical_clashes": [
+    {
+      "type": "hard_clash",
+      "obstacle_id": "CHWR-24",
+      "label": "Existing chilled-water return pipe",
+      "discipline": "Mechanical",
+      "description": "Candidate envelope intersects Existing chilled-water return pipe."
+    }
+  ],
+  "clearance_violations": [],
+  "connector_offsets": [
+    {
+      "connector_id": "inlet",
+      "offset_mm": 135.0,
+      "tolerance_mm": 10.0,
+      "within_tolerance": false
+    }
+  ],
+  "required_modifications": [
+    {
+      "type": "connector_reroute",
+      "connector_id": "inlet",
+      "offset_mm": 135.0,
+      "description": "Provide a 135 mm spool/routing adjustment."
+    }
+  ],
+  "bcfzip": "C:\\Users\\jjoon\\OneDrive\\Documents\\BuildCrew\\outputs\\demo\\mcp_artifacts\\BC-2026-0142\\candidate-a\\candidate-a-coordination.bcfzip",
+  "report_json": "C:\\Users\\jjoon\\OneDrive\\Documents\\BuildCrew\\outputs\\demo\\mcp_artifacts\\BC-2026-0142\\candidate-a\\coordination-report.json"
+}
