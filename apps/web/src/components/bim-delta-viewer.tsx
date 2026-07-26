@@ -196,7 +196,29 @@ export function BimDeltaViewer({ candidate, compact = false }: BimDeltaViewerPro
         model.position.sub(center);
         model.position.y += 1.45;
         scene.add(model);
-        controls.target.set(compact ? 5 : 2.5, compact ? 1.05 : -0.7, compact ? 2.8 : 1.15);
+        if (compact) {
+          controls.target.set(5, 1.05, 2.8);
+        } else {
+          const focusBounds = new THREE.Box3();
+          model.traverse((object) => {
+            if (
+              object.name.includes("replacement")
+              || object.name.includes("critical-clash")
+              || object.name.includes("critical-clearance")
+            ) {
+              focusBounds.expandByObject(object);
+            }
+          });
+          const focusCenter = focusBounds.getCenter(new THREE.Vector3());
+          const focusSize = focusBounds.getSize(new THREE.Vector3());
+          const distance = Math.max(6.5, Math.max(focusSize.x, focusSize.y, focusSize.z) * 2.35);
+          controls.target.copy(focusCenter);
+          camera.position.set(
+            focusCenter.x + distance,
+            focusCenter.y - distance * 0.78,
+            focusCenter.z + distance * 0.66,
+          );
+        }
         controls.update();
         setLoadingState("ready");
         host.dataset.rendererState = "ready";
