@@ -111,6 +111,8 @@ class MechanicalRoomScene:
     def add(self, mesh: trimesh.Trimesh, name: str) -> None:
         self.counter += 1
         prefix = f"{self.layer_prefix}-" if self.layer_prefix else ""
+        if self.layer_prefix == "replacement":
+            _paint(mesh, COLORS["red"] if self.replacement_rejected else COLORS["green"])
         self.scene.add_geometry(mesh, node_name=f"{prefix}{name}-{self.counter:04d}")
 
     def add_flange(
@@ -252,7 +254,7 @@ class MechanicalRoomScene:
         pump_x = 2.0
         self.add_pump(pump_x, y, selected=selected)
         if selected:
-            self.add_pump(pump_x - 0.18, y + 0.08, selected=False, ghost=True)
+            self.add_pump(pump_x, y, selected=False, ghost=True)
         self.add(_cylinder(pipe_radius, 1.55, (4.86, y, z), COLORS["pipe"], "x", 64), "discharge-pipe")
         self.add_handwheel_valve(4.22, y, z, pipe_radius)
         modified_color = (

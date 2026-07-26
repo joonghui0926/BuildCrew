@@ -158,6 +158,20 @@ def test_candidate_bim_uses_fit_verdict_highlight_color():
     assert pump_color(accepted_scene) == (80, 200, 120, 255)
 
 
+def test_replacement_and_existing_envelope_share_mounting_datum():
+    scene = MechanicalRoomScene().build("candidate-c")
+
+    def geometry_bounds(prefix: str) -> tuple[tuple[float, ...], tuple[float, ...]]:
+        node = next(name for name in scene.graph.nodes_geometry if name.startswith(prefix))
+        _, geometry_name = scene.graph[node]
+        bounds = scene.geometry[geometry_name].bounds
+        return tuple(bounds[0]), tuple(bounds[1])
+
+    assert geometry_bounds("replacement-housekeeping-pad-") == geometry_bounds(
+        "removed-existing-housekeeping-pad-"
+    )
+
+
 @pytest.mark.asyncio
 async def test_coordination_rejects_hard_clash(tmp_path: Path):
     engine = BimEngine(tmp_path)

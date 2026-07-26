@@ -140,21 +140,24 @@ export function BimDeltaViewer({ candidate, compact = false }: BimDeltaViewerPro
           const sourceMaterials = Array.isArray(object.material) ? object.material : [object.material];
           const materials = sourceMaterials.map((material) => {
             if (object.name.includes("replacement")) {
-              return new THREE.MeshStandardMaterial({
+              return new THREE.MeshBasicMaterial({
                 color: fitsProject ? 0x50c878 : 0xd65f58,
-                emissive: fitsProject ? 0x123d22 : 0x4a1411,
-                emissiveIntensity: 0.2,
-                metalness: object.name.includes("pipe") || object.name.includes("flange") ? 0.24 : 0.06,
-                roughness: 0.68,
+                toneMapped: false,
               });
             }
             if (object.name.includes("impact-")) {
-              return new THREE.MeshStandardMaterial({
+              return new THREE.MeshBasicMaterial({
                 color: fitsProject ? 0xe7a537 : 0xd65f58,
-                emissive: fitsProject ? 0x3d2508 : 0x4a1411,
-                emissiveIntensity: 0.16,
-                metalness: 0.16,
-                roughness: 0.68,
+                toneMapped: false,
+              });
+            }
+            if (object.name.includes("removed-existing")) {
+              return new THREE.MeshBasicMaterial({
+                color: 0x78807b,
+                depthWrite: false,
+                opacity: 0.32,
+                transparent: true,
+                wireframe: true,
               });
             }
             const next = material.clone();
@@ -167,17 +170,6 @@ export function BimDeltaViewer({ candidate, compact = false }: BimDeltaViewerPro
               next.opacity = 0.13;
               next.depthWrite = false;
               next.side = THREE.DoubleSide;
-            }
-            if (object.name.includes("removed-existing")) {
-              if (next instanceof THREE.MeshStandardMaterial) {
-                next.vertexColors = false;
-                next.color.set(0x78807b);
-                next.emissive.set(0x000000);
-                next.emissiveIntensity = 0;
-              }
-              next.transparent = true;
-              next.opacity = 0.15;
-              next.depthWrite = false;
             }
             if (
               object.name.includes("critical-clash")
