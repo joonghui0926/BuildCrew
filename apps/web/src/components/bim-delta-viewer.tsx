@@ -197,6 +197,7 @@ export function BimDeltaViewer({ candidate, compact = false }: BimDeltaViewerPro
         model.position.sub(center);
         model.position.y += 1.45;
         scene.add(model);
+        model.updateMatrixWorld(true);
         if (compact) {
           controls.target.set(5, 1.05, 2.8);
         } else {
