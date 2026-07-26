@@ -8,7 +8,7 @@ import trimesh
 from pydantic import ValidationError
 
 from buildcrew_bim_mcp.engine import BimEngine
-from buildcrew_bim_mcp.mechanical_room import export_m601_dajoong_bim, export_m601_ifc
+from buildcrew_bim_mcp.mechanical_room import MechanicalRoomScene, export_m601_dajoong_bim, export_m601_ifc
 from buildcrew_bim_mcp.schemas import (
     AabbObstacle,
     CandidateInput,
@@ -142,6 +142,20 @@ def test_project_bim_exports_high_detail_glb_and_semantic_ifc(tmp_path: Path):
     assert "IFCPUMP" in ifc_text
     assert "IFCWALL" in ifc_text
     assert "DajoongSceneDigest" in ifc_text
+
+
+def test_candidate_bim_uses_fit_verdict_highlight_color():
+    rejected_scene = MechanicalRoomScene().build("candidate-a")
+    accepted_scene = MechanicalRoomScene().build("candidate-c")
+
+    def pump_color(scene: trimesh.Scene) -> tuple[int, int, int, int]:
+        node = next(name for name in scene.graph.nodes_geometry if name.startswith("replacement-pump-volute-"))
+        _, geometry_name = scene.graph[node]
+        color = scene.geometry[geometry_name].visual.vertex_colors[0]
+        return tuple(int(channel) for channel in color)
+
+    assert pump_color(rejected_scene) == (197, 90, 84, 255)
+    assert pump_color(accepted_scene) == (80, 200, 120, 255)
 
 
 @pytest.mark.asyncio

@@ -116,18 +116,26 @@ export function CandidateDetailView({
       </header>
 
       <nav className="candidate-switcher" aria-label="BIM-reviewed candidates">
-        {caseData.candidates.map((item) => (
-          <button
-            className={item.id === candidate.id ? "candidate-switch candidate-switch--active" : "candidate-switch"}
-            key={item.id}
-            onClick={() => onSelectCandidate(item.id)}
-            type="button"
-          >
-            <span>{item.label}</span>
-            <strong>{item.manufacturer} {item.model}</strong>
-            <small>{item.criticalClashes} critical clashes</small>
-          </button>
-        ))}
+        {caseData.candidates.map((item) => {
+          const fitsProject = item.status === "recommended";
+          const classes = [
+            "candidate-switch",
+            item.id === candidate.id ? "candidate-switch--active" : "",
+            fitsProject ? "candidate-switch--fit" : "candidate-switch--reject",
+          ].filter(Boolean).join(" ");
+          return (
+            <button
+              className={classes}
+              key={item.id}
+              onClick={() => onSelectCandidate(item.id)}
+              type="button"
+            >
+              <span>{item.label}</span>
+              <strong>{item.manufacturer} {item.model}</strong>
+              <small>{fitsProject ? "FITS PROJECT" : "DOES NOT FIT"} · {item.criticalClashes} critical clashes</small>
+            </button>
+          );
+        })}
       </nav>
 
       <section className="candidate-model-review">

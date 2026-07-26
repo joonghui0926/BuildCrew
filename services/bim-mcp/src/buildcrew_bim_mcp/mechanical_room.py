@@ -106,6 +106,7 @@ class MechanicalRoomScene:
         self.scene = trimesh.Scene()
         self.counter = 0
         self.layer_prefix = ""
+        self.replacement_rejected = False
 
     def add(self, mesh: trimesh.Trimesh, name: str) -> None:
         self.counter += 1
@@ -206,9 +207,13 @@ class MechanicalRoomScene:
     ) -> None:
         previous_prefix = self.layer_prefix
         self.layer_prefix = "removed-existing" if ghost else ("replacement" if selected else "existing-duty")
-        color = COLORS["green"] if selected else COLORS["pump"]
+        color = (
+            COLORS["red"]
+            if selected and self.replacement_rejected
+            else (COLORS["green"] if selected else COLORS["pump"])
+        )
         alpha = 70 if ghost else 255
-        base_color = COLORS["red"] if ghost else COLORS["dark_steel"]
+        base_color = COLORS["steel"] if ghost else COLORS["dark_steel"]
         self.add(_box((3.05, 1.40, 0.18), (x, y, 0.19), base_color, alpha), "pump-skid")
         self.add(_box((3.35, 1.70, 0.18), (x, y, 0.09), COLORS["concrete"], alpha), "housekeeping-pad")
         for bx in (x - 1.40, x + 1.40):
@@ -216,14 +221,15 @@ class MechanicalRoomScene:
                 self.add(_cylinder(0.035, 0.24, (bx, by, 0.20), COLORS["dark_steel"], "z", 24, alpha), "anchor-bolt")
 
         motor_center = (x - 0.62, y, 0.79)
-        self.add_motor(motor_center, 1.36, 0.42, color if not ghost else COLORS["red"])
+        self.add_motor(motor_center, 1.36, 0.42, color if not ghost else COLORS["steel"])
         self.add(_cylinder(0.28, 0.46, (x + 0.24, y, 0.80), COLORS["dark_steel"], "x", 64, alpha), "coupling-guard")
-        self.add(_sphere(0.52, (x + 0.78, y, 0.83), color if not ghost else COLORS["red"], (0.82, 1, 1), alpha), "pump-volute")
-        self.add(_torus(0.38, 0.10, (x + 0.72, y, 0.83), color if not ghost else COLORS["red"], "x", alpha), "pump-volute-ring")
-        self.add(_cylinder(0.20, 0.60, (x + 1.22, y, 0.83), color if not ghost else COLORS["red"], "x", 64, alpha), "pump-suction")
-        self.add_flange((x + 1.52, y, 0.83), 0.20, color=color if not ghost else COLORS["red"])
-        self.add(_cylinder(0.17, 0.58, (x + 0.78, y, 1.27), color if not ghost else COLORS["red"], "z", 64, alpha), "pump-discharge")
-        self.add_flange((x + 0.78, y, 1.56), 0.17, axis="z", color=color if not ghost else COLORS["red"])
+        ghost_color = COLORS["steel"]
+        self.add(_sphere(0.52, (x + 0.78, y, 0.83), color if not ghost else ghost_color, (0.82, 1, 1), alpha), "pump-volute")
+        self.add(_torus(0.38, 0.10, (x + 0.72, y, 0.83), color if not ghost else ghost_color, "x", alpha), "pump-volute-ring")
+        self.add(_cylinder(0.20, 0.60, (x + 1.22, y, 0.83), color if not ghost else ghost_color, "x", 64, alpha), "pump-suction")
+        self.add_flange((x + 1.52, y, 0.83), 0.20, color=color if not ghost else ghost_color)
+        self.add(_cylinder(0.17, 0.58, (x + 0.78, y, 1.27), color if not ghost else ghost_color, "z", 64, alpha), "pump-discharge")
+        self.add_flange((x + 0.78, y, 1.56), 0.17, axis="z", color=color if not ghost else ghost_color)
         self.layer_prefix = previous_prefix
 
     def add_pipe_train(self, y: float, *, selected: bool) -> None:
@@ -249,7 +255,11 @@ class MechanicalRoomScene:
             self.add_pump(pump_x - 0.18, y + 0.08, selected=False, ghost=True)
         self.add(_cylinder(pipe_radius, 1.55, (4.86, y, z), COLORS["pipe"], "x", 64), "discharge-pipe")
         self.add_handwheel_valve(4.22, y, z, pipe_radius)
-        modified_color = COLORS["amber"] if selected else COLORS["pipe"]
+        modified_color = (
+            COLORS["red"]
+            if selected and self.replacement_rejected
+            else (COLORS["amber"] if selected else COLORS["pipe"])
+        )
         impact_prefix = "impact-" if selected else ""
         self.add(_cylinder(pipe_radius, 1.05, (5.78, y, z), modified_color, "x", 64), f"{impact_prefix}modified-spool")
         self.add(_sphere(pipe_radius * 1.03, (6.30, y, z), modified_color), f"{impact_prefix}elbow")
@@ -282,6 +292,7 @@ class MechanicalRoomScene:
         self.add(_box((4.05, 2.55, 1.85), (x - 0.20, y, 0.93), "#BCE8C9", 35), "maintenance-clearance")
 
     def build(self, candidate_id: str = "candidate-c") -> trimesh.Scene:
+        self.replacement_rejected = candidate_id in {"candidate-a", "candidate-b"}
         self.add_room()
         self.add_pipe_train(-2.15, selected=True)
         self.add_pipe_train(2.15, selected=False)

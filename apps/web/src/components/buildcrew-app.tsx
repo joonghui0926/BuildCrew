@@ -53,9 +53,16 @@ function CandidateRow({
   selected: boolean;
   onSelect: () => void;
 }) {
+  const fitsProject = candidate.status === "recommended";
+  const rowClasses = [
+    "candidate-row",
+    selected ? "candidate-row--selected" : "",
+    fitsProject ? "candidate-row--fit" : "candidate-row--reject",
+  ].filter(Boolean).join(" ");
+
   return (
     <button
-      className={selected ? "candidate-row candidate-row--selected" : "candidate-row"}
+      className={rowClasses}
       onClick={onSelect}
       type="button"
     >
@@ -65,6 +72,7 @@ function CandidateRow({
       <span className="candidate-copy">
         <span>{candidate.label}</span>
         <strong>{candidate.manufacturer} · {candidate.model}</strong>
+        <em>{fitsProject ? "FITS PROJECT" : "DOES NOT FIT"}</em>
       </span>
       <span className="candidate-score">
         <strong>{candidate.criticalClashes}</strong>

@@ -568,6 +568,65 @@ a {
   font-size: 14px;
 }
 
+.bim-fit-state {
+  align-items: center;
+  backdrop-filter: blur(16px);
+  display: flex;
+  gap: 10px;
+  padding: 10px 12px;
+  pointer-events: none;
+  position: absolute;
+  right: 18px;
+  top: 62px;
+  z-index: 7;
+}
+
+.bim-fit-state > span:first-child {
+  align-items: center;
+  border-radius: 50%;
+  display: flex;
+  flex: 0 0 30px;
+  height: 30px;
+  justify-content: center;
+  width: 30px;
+}
+
+.bim-fit-state > span:last-child {
+  display: grid;
+  gap: 2px;
+}
+
+.bim-fit-state strong {
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+}
+
+.bim-fit-state small {
+  font-size: 8px;
+  font-weight: 650;
+}
+
+.bim-fit-state--fit {
+  background: rgba(234, 250, 240, 0.92);
+  color: var(--green-deep);
+}
+
+.bim-fit-state--fit > span:first-child {
+  background: var(--green);
+  color: white;
+}
+
+.bim-fit-state--reject {
+  background: rgba(255, 237, 235, 0.94);
+  color: var(--red);
+}
+
+.bim-fit-state--reject > span:first-child {
+  background: var(--red);
+  color: white;
+}
+
 .verdict {
   background: var(--green-pale);
   border-radius: 99px;
@@ -634,7 +693,7 @@ a {
 .legend-dot--new { background: var(--green); }
 .legend-dot--impact { background: #f5a742; }
 .legend-dot--critical { background: var(--red); }
-.legend-dot--old { background: #d96d65; }
+.legend-dot--old { background: #78807b; }
 
 .bim-viewer__hint {
   color: rgba(23, 33, 28, 0.46);
@@ -870,6 +929,16 @@ a {
   background: var(--surface);
 }
 
+.candidate-row--selected.candidate-row--fit {
+  background: var(--green-pale);
+  box-shadow: inset 3px 0 0 var(--green);
+}
+
+.candidate-row--selected.candidate-row--reject {
+  background: var(--red-pale);
+  box-shadow: inset 3px 0 0 var(--red);
+}
+
 .candidate-state {
   align-items: center;
   border-radius: 50%;
@@ -908,6 +977,21 @@ a {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.candidate-copy em {
+  font-size: 7px;
+  font-style: normal;
+  font-weight: 900;
+  letter-spacing: 0.07em;
+}
+
+.candidate-row--fit .candidate-copy em {
+  color: var(--green-deep);
+}
+
+.candidate-row--reject .candidate-copy em {
+  color: var(--red);
 }
 
 .candidate-score {
@@ -1710,14 +1794,28 @@ a {
   right: 0;
 }
 
-.candidate-switch--active::after {
+.candidate-switch--active.candidate-switch--fit::after {
   background: var(--green);
+}
+
+.candidate-switch--active.candidate-switch--reject::after {
+  background: var(--red);
 }
 
 .candidate-switch span,
 .candidate-switch small {
   color: var(--muted);
   font-size: 8px;
+}
+
+.candidate-switch--fit small {
+  color: var(--green-deep);
+  font-weight: 800;
+}
+
+.candidate-switch--reject small {
+  color: var(--red);
+  font-weight: 800;
 }
 
 .candidate-switch strong {
@@ -2869,6 +2967,12 @@ a {
   .candidate-page__model .bim-viewer {
     height: 56vh;
     min-height: 410px;
+  }
+
+  .bim-fit-state {
+    left: 14px;
+    right: auto;
+    top: 58px;
   }
 
   .candidate-facts {

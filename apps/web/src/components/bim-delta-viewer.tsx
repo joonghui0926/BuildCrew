@@ -29,6 +29,7 @@ export function BimDeltaViewer({ candidate, compact = false }: BimDeltaViewerPro
   const modelUrl = candidate
     ? `/demo/m601-${candidate.id}.glb`
     : "/demo/m601-dajoong-bim.glb";
+  const fitsProject = candidate?.status !== "rejected";
 
   useEffect(() => {
     const host = hostRef.current;
@@ -141,6 +142,18 @@ export function BimDeltaViewer({ candidate, compact = false }: BimDeltaViewerPro
             if (next instanceof THREE.MeshStandardMaterial) {
               next.roughness = Math.min(next.roughness || 0.76, 0.86);
               next.metalness = object.name.includes("pipe") || object.name.includes("flange") ? 0.34 : 0.08;
+              if (object.name.includes("replacement")) {
+                next.vertexColors = false;
+                next.color.set(fitsProject ? 0x50c878 : 0xd65f58);
+                next.emissive.set(fitsProject ? 0x123d22 : 0x4a1411);
+                next.emissiveIntensity = 0.16;
+              }
+              if (object.name.includes("impact-")) {
+                next.vertexColors = false;
+                next.color.set(fitsProject ? 0xe7a537 : 0xd65f58);
+                next.emissive.set(fitsProject ? 0x3d2508 : 0x4a1411);
+                next.emissiveIntensity = 0.12;
+              }
             }
             if (object.name.includes("maintenance-clearance")) {
               next.transparent = true;
@@ -149,16 +162,28 @@ export function BimDeltaViewer({ candidate, compact = false }: BimDeltaViewerPro
               next.side = THREE.DoubleSide;
             }
             if (object.name.includes("removed-existing")) {
+              if (next instanceof THREE.MeshStandardMaterial) {
+                next.vertexColors = false;
+                next.color.set(0x78807b);
+                next.emissive.set(0x000000);
+                next.emissiveIntensity = 0;
+              }
               next.transparent = true;
-              next.opacity = 0.24;
+              next.opacity = 0.15;
               next.depthWrite = false;
             }
             if (
               object.name.includes("critical-clash")
               || object.name.includes("critical-clearance")
             ) {
+              if (next instanceof THREE.MeshStandardMaterial) {
+                next.vertexColors = false;
+                next.color.set(0xd65f58);
+                next.emissive.set(0x5a1713);
+                next.emissiveIntensity = 0.2;
+              }
               next.transparent = true;
-              next.opacity = 0.62;
+              next.opacity = 0.82;
               next.depthWrite = false;
             }
             return next;
@@ -229,7 +254,7 @@ export function BimDeltaViewer({ candidate, compact = false }: BimDeltaViewerPro
       renderer.dispose();
       host.replaceChildren();
     };
-  }, [compact, mode, modelUrl]);
+  }, [compact, fitsProject, mode, modelUrl]);
 
   const status = candidate?.status === "rejected" ? "REJECTED" : "INSTALLABLE";
   return (
@@ -255,6 +280,19 @@ export function BimDeltaViewer({ candidate, compact = false }: BimDeltaViewerPro
           {status}
         </span>
       </div>
+      {candidate && !compact && (
+        <div className={fitsProject ? "bim-fit-state bim-fit-state--fit" : "bim-fit-state bim-fit-state--reject"}>
+          <span>{fitsProject ? <CheckIcon /> : <RejectIcon />}</span>
+          <span>
+            <strong>{fitsProject ? "FITS PROJECT" : "DOES NOT FIT"}</strong>
+            <small>
+              {fitsProject
+                ? "No critical coordination conflict"
+                : `${candidate.criticalClashes} critical conflict · highlighted red`}
+            </small>
+          </span>
+        </div>
+      )}
       {!compact && (
         <>
           <div className="bim-viewer__modes" aria-label="Viewer layers">
@@ -270,7 +308,10 @@ export function BimDeltaViewer({ candidate, compact = false }: BimDeltaViewerPro
             ))}
           </div>
           <div className="bim-viewer__legend">
-            <span><i className="legend-dot legend-dot--new" />Replacement</span>
+            <span>
+              <i className={fitsProject ? "legend-dot legend-dot--new" : "legend-dot legend-dot--critical"} />
+              Selected candidate
+            </span>
             {candidate?.criticalClashes ? (
               <span><i className="legend-dot legend-dot--critical" />Critical conflict</span>
             ) : (
@@ -289,5 +330,21 @@ export function BimDeltaViewer({ candidate, compact = false }: BimDeltaViewerPro
         </>
       )}
     </section>
+  );
+}
+
+function CheckIcon() {
+  return (
+    <svg aria-hidden="true" fill="none" height="16" viewBox="0 0 16 16" width="16">
+      <path d="m3.2 8.2 3 3L12.9 4.8" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
+    </svg>
+  );
+}
+
+function RejectIcon() {
+  return (
+    <svg aria-hidden="true" fill="none" height="16" viewBox="0 0 16 16" width="16">
+      <path d="m4 4 8 8m0-8-8 8" stroke="currentColor" strokeLinecap="round" strokeWidth="2" />
+    </svg>
   );
 }
